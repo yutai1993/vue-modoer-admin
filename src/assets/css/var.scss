@@ -1,0 +1,34 @@
+/*  侧边栏  */
+$menuBg: #445c64; /* 侧边栏背景色 */
+$submenuBg: #4e5b6b; /*子菜单背景色*/
+$menuHover: #263445; /*子菜单hover背景色*/
+$textColor: #fff; /* 侧边栏文字颜色 */
+$activeTextColor: #f6d04b; /* 侧边栏文字激活后颜色 */
+
+/* Top header */
+$TopHeaderBg: #445c64; /* 顶部页头背景色 */
+$TopHeaderActiveTextColor: #fff; /* 头部右侧文字激活颜色 */
+$TopHeaderActiveIconColor: #909399; /* 头部右侧下拉菜单图标激活颜色 */
+$TopHeaderActiveBorderColor: #445c64; /* 头部右侧bottomBorder激活颜色 */
+
+/* 面包屑 */
+$breadcrumbColor: #fff; /* 面包屑 */
+$breadcrumbColorHover: #68FF59; /* 面包屑hover */
+$breadcrumbCurrentColor: #D1A844; /* 面包屑当前路由颜色 */
+
+
+/* 导出 */
+
+      /*
+      计算属性中使用
+      variables () {
+        return variables
+      }
+      */
+:export {
+  menuBg: $menuBg;
+  textColor: $textColor;
+  activeTextColor: $activeTextColor;
+  TopHeaderBg: $TopHeaderBg;
+  TopHeaderActiveTextColor: $TopHeaderActiveTextColor;
+}

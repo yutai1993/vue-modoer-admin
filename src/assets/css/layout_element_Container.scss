@@ -1,0 +1,29 @@
+/*layout 基础布局*/
+.el-container {
+  height: 100%;
+}
+
+.el-header {
+  background-color: #B3C0D1;
+  color: #333;
+  line-height: 60px;
+  padding: 0;
+}
+
+.el-aside {
+  background-color: #D3DCE6;
+  color: #333;
+  line-height: 1.5;
+}
+
+.el-main {
+  background-color: #E9EEF3;
+  color: #333;
+  line-height: 1.5;
+}
+
+body > .el-container {
+  margin-bottom: 40px;
+}
+
+

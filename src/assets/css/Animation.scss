@@ -1,0 +1,34 @@
+/* 路由组件过渡 */
+.manAnimation-enter,
+.manAnimation-leave-to{
+  opacity: 0;
+  transform: translateX(5px);
+}
+
+.manAnimation-enter-active,
+.manAnimation-leave-active{
+  transition: all .2s ease;
+}
+
+
+/* 面包屑过渡 */
+.breadcrumb-enter-active {
+  transition: all .3s ease;
+}
+
+.breadcrumb-enter{
+  transform: translateX(0px);
+  opacity: 0;
+}
+
+.breadcrumb-enter-to{
+  transform: translateX(30px);
+  opacity: .4;
+}
+
+.breadcrumb-leave{
+  opacity: 0.1;
+}
+.breadcrumb-leave-to{
+  opacity: 1;
+}
