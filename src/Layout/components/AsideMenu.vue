@@ -19,7 +19,7 @@
     <template v-for="v in asidMenu">
       <el-submenu v-if="v.children && v.children.length > 0" :key="v.name" :index="v.name">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i :class="[v.meta.icon ? v.meta.icon : 'el-icon-location', 'iconfont']"></i>
           <span>{{v && v.meta.title}}</span>
         </template>
         <!-- 二级菜单 -->
@@ -33,7 +33,7 @@
       </el-submenu>
       <!-- 单个 -->
       <el-menu-item v-else-if="!v.children" :disabled="v.name === $route.name" :key="v.name" :index="v.name">
-        <i class="el-icon-menu"></i>
+        <i :class="[v.meta.icon ? v.meta.icon : 'el-icon-menu', 'iconfont']"></i>
         <span slot="title">{{v && v.meta.title}}</span>
       </el-menu-item>
     </template>

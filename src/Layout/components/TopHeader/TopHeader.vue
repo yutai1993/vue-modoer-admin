@@ -13,7 +13,8 @@
 
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <transition-group name="breadcrumb" tag="div" mode="out-in">
-          <el-breadcrumb-item v-for="item in breadcrumb" :key="item.path" :to="{name:item.path}">{{item.title}}</el-breadcrumb-item>
+          <el-breadcrumb-item v-for="item in breadcrumb" :key="item.path" :to="{name:item.path}">{{item.title}}
+          </el-breadcrumb-item>
         </transition-group>
       </el-breadcrumb>
 
@@ -31,7 +32,8 @@
 <script>
 import variables from '@/assets/css/var.scss'
 import { mapState } from 'vuex'
-
+import { Message } from 'element-ui'
+import { removeSessionItem } from '@/utils/utils'
 export default {
   name: 'TopHeader',
   props: {
@@ -58,6 +60,19 @@ export default {
   methods: {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
+      if (key === '2-1') {
+        Message.success({
+          message: '修改密码'
+        })
+      } else if (key === '2-2') {
+        Message.success({
+          message: '首页'
+        })
+      } else if (key === '2-3') {
+        removeSessionItem('token')
+        removeSessionItem('userRouters')
+        location.reload()
+      }
     },
 
     isCollapsehandle () {
@@ -104,11 +119,12 @@ export default {
       margin-left: 20px;
     }
   }
+
   .el-menu-item.is-active i {
     color: $TopHeaderActiveIconColor;
   }
 
-  .el-submenu.is-active .el-submenu__title{
+  .el-submenu.is-active .el-submenu__title {
     border-bottom-color: $TopHeaderActiveBorderColor !important
   }
 

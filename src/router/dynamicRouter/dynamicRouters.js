@@ -7,7 +7,7 @@ const dynamicRouters = [
     meta: {
       // 匹配规则
       title: '首页',
-      icon: 'icon-name'
+      icon: 'el-icon-s-home'
     }
   },
   {
@@ -15,7 +15,7 @@ const dynamicRouters = [
     name: 'Examine',
     meta: {
       title: '审核管理',
-      icon: 'icon-name'
+      icon: ''
     },
     component: () => import(/* webpackChunkName: "examine" */'../../views/examine/index.vue'),
     children: [
@@ -25,7 +25,7 @@ const dynamicRouters = [
         component: () => import(/* webpackChunkName: "comment" */'../../views/examine/comment/comment.vue'),
         meta: {
           title: '点评审核',
-          icon: 'icon-name'
+          icon: 'el-icon-view'
         }
       },
       {
@@ -34,7 +34,7 @@ const dynamicRouters = [
         component: () => import(/* webpackChunkName: "theme" */'../../views/examine/theme/theme.vue'),
         meta: {
           title: '主题审核',
-          icon: 'icon-name'
+          icon: 'el-icon-date'
         }
       }
     ]

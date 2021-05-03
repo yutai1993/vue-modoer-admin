@@ -1,10 +1,10 @@
 <template>
-  <div>403</div>
+  <div>404页面不存在</div>
 </template>
 
 <script>
 export default {
-  name: 'Forbidden'
+  name: 'notFound'
 }
 </script>
 

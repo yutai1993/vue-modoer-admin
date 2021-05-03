@@ -32,6 +32,16 @@ export const DynamicRouter = [
     children: [
 
     ]
+  },
+  {
+    path: '/403',
+    name: 'Forbidden',
+    component: () => import(/* webpackChunkName: "Forbidden" */ '../Layout/403.vue')
+  },
+  {
+    path: '*',
+    name: 'notFound',
+    component: () => import(/* webpackChunkName: "notFound" */ '../Layout/404.vue')
   }
 ]
 

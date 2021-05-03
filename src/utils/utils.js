@@ -42,6 +42,8 @@ export function filterRouters (allRouter = [], userRouter = []) {
           allItem.children = filterRouters(allItem.children, userItem.children)
         }
 
+        userItem.meta = userItem.meta ? userItem.meta : {}
+        userItem.meta.rules = userItem.meta.rules ? userItem.meta.rules : []
         /* 按钮 Ajax 拦截规则 */
         allItem.meta.rules = userItem.meta.rules
         filteredRouters.push(allItem)
