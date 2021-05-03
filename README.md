@@ -1,4 +1,4 @@
-# modoer-admin
+# modoer-admin-template
 
 ## Project setup
 ```
