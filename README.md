@@ -1,11 +1,16 @@
 # modoer-admin-template
 
+## 单独克隆本分支
+```
+git clone -b template https://github.com/yutai1993/vue-modoer-admin.git
+```
+
 ### vue version
 ```
 vue版本: vue2
 ```
 
-## Project setup
+### Project setup
 ```
 npm install
 ```
