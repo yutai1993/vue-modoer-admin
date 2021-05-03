@@ -6,7 +6,6 @@
       <el-button type="danger">删除按钮</el-button>
     </div>
     <div v-for="item in 50" :key="item">{{item}}修改后</div>
-    <!-- 添加注释测试 -->
   </div>
 </template>
 
