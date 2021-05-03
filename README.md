@@ -1,5 +1,10 @@
 # modoer-admin-template
 
+### Lints and fixes files
+```
+vue版本: vue2
+```
+
 ## Project setup
 ```
 npm install
