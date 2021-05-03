@@ -5,7 +5,7 @@
       <el-button type="warning">修改按钮</el-button>
       <el-button type="danger">删除按钮</el-button>
     </div>
-    <div v-for="item in 50" :key="item">{{item}}修改后人推</div>
+    <div v-for="item in 50" :key="item">{{item}}修改后</div>
   </div>
 </template>
 

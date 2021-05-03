@@ -68,6 +68,7 @@ export default {
   },
 
   watch: {
+    /* 监听折叠展开 设置侧边栏宽度 */
     isCollapse (data) {
       if (data) {
         this.isCollapseW200 = '64px'
@@ -77,7 +78,7 @@ export default {
         this.isCollapseW220 = '220px'
       }
     },
-
+    /* 如果可视区小于750 打开遮罩 */
     drawer (data) {
       const Resize = document.documentElement.clientWidth
       if (!data && this.ison && Resize <= 750) {
@@ -87,6 +88,7 @@ export default {
   },
 
   computed: {
+    /* 展开收起 */
     ...mapState('Layout', ['isCollapse'])
   },
 
@@ -143,7 +145,7 @@ export default {
     }
 
   },
-
+  /* 销毁之前解绑事件 */
   beforeDestroy () {
     removeEventListener('resize', this.getResize)
   }
