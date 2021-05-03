@@ -1,6 +1,6 @@
 # modoer-admin-template
 
-### Lints and fixes files
+### vue version
 ```
 vue版本: vue2
 ```
