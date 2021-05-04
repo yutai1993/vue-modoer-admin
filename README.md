@@ -54,6 +54,15 @@ vue2全家桶+element-ui(按需导入) 做的后台基础模板
 
 ### 基本功能
 
+
+#### mock 预置登录账号
+
+```
+name: admin password: 6个字符  验证码: 不为空
+name: xiaoMing password: 6个字符  验证码: 不为空
+```
+
+
 #### addRoute动态路由
 
 ```
