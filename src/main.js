@@ -7,6 +7,8 @@ import './directive/directive' /* 自定义指令 */
 import 'element-ui/lib/theme-chalk/base.css' /* element-ui 动画 */
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition' /* element-ui 动画 */
 
+import '@/components/BaseComponents' /* base-icon-svg 组件 */
+
 import './mock/index' /* 路由拦截 */
 
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
@@ -34,6 +36,8 @@ echarts.use(
 
 import {
   Container,
+  Row,
+  Col,
   Header,
   Aside,
   Main,
@@ -58,6 +62,8 @@ import {
 } from 'element-ui'
 
 Vue.use(Container)
+Vue.use(Row)
+Vue.use(Col)
 Vue.use(Header)
 Vue.use(Aside)
 Vue.use(Main)

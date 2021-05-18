@@ -51,6 +51,7 @@ axios.interceptors.request.use(function (config) {
   loadingInstance = Loading.service({
     lock: true,
     text: 'Loading',
+    fullscreen: false,
     spinner: 'el-icon-loading',
     background: 'rgba(0, 0, 0, 0.5)'
   })

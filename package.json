@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "svgo": "svgo -f src/assets/svg --config=src/components/BaseComponents/svgo.yml",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
@@ -15,6 +16,8 @@
     "element-ui": "^2.15.1",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
+    "svg-sprite-loader": "^6.0.6",
+    "svgo": "^1.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"

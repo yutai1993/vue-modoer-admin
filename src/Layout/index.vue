@@ -23,7 +23,7 @@
       </el-header>
       <el-main>
         <transition name="manAnimation" mode="out-in">
-          <router-view/>
+            <router-view/>
         </transition>
       </el-main>
     </el-container>
