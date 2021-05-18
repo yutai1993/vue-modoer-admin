@@ -26,7 +26,6 @@ axios.interceptors.request.use(function (config) {
   /* 请求加1 */
   count++
   config.timeout = 5000 // 请求超时
-
   /* 请求头添加token login除外 */
   if (config.url !== '/api/login') {
     config.headers.Authorization = store.state.user.token.token
@@ -81,7 +80,9 @@ axios.interceptors.response.use(function (response) {
         })
     }
   }
+
 }, function (error) {
+
   if (error && error.response) {
     switch (error.response.status) {
       case 400:
@@ -126,7 +127,9 @@ axios.interceptors.response.use(function (response) {
   } else {
     // error.message = "连接到服务器失败";
   }
-  loadingInstance.close()
+  if (loadingInstance){
+    loadingInstance.close()
+  }
 
   // 取消发送请求的错误
   if (axios.isCancel(error)) {

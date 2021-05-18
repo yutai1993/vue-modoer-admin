@@ -1,5 +1,5 @@
 {
-  "name": "modoer-admin",
+  "name": "modoer-admin-components",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,6 +15,8 @@
     "element-ui": "^2.15.1",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
+    "svg-sprite-loader": "^6.0.6",
+    "svgo": "^1.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"

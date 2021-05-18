@@ -1,42 +1,24 @@
 
 const dynamicRouters = [
   {
-    path: 'home',
-    name: 'Home',
-    component: () => import(/* webpackChunkName: "home" */ '../../views/Home.vue'),
+    path: 'components',
+    name: 'Components',
     meta: {
-      // 匹配规则
-      title: '首页',
-      icon: 'el-icon-s-home'
-    }
-  },
-  {
-    path: 'examine',
-    name: 'Examine',
-    meta: {
-      title: '审核管理',
+      title: 'modoer组件',
       icon: ''
     },
-    component: () => import(/* webpackChunkName: "examine" */'../../views/examine/index.vue'),
+    component: () => import(/* webpackChunkName: "components" */'../../views/components/index.vue'),
     children: [
       {
-        path: 'comment',
-        name: 'comment',
-        component: () => import(/* webpackChunkName: "comment" */'../../views/examine/comment/comment.vue'),
+        path: 'echarts',
+        name: 'Echarts',
+        component: () => import(/* webpackChunkName: "Echarts" */'../../views/components/Echarts/Echarts.vue'),
         meta: {
-          title: '点评审核',
+          title: 'Echarts&icon',
           icon: 'el-icon-view'
         }
       },
-      {
-        path: 'theme',
-        name: 'Theme',
-        component: () => import(/* webpackChunkName: "theme" */'../../views/examine/theme/theme.vue'),
-        meta: {
-          title: '主题审核',
-          icon: 'el-icon-date'
-        }
-      }
+
     ]
   }
 ]

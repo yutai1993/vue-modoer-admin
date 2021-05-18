@@ -7,11 +7,11 @@
 </template>
 
 <script>
-export default {
-  name: 'examine'
-}
+  export default {
+    name: "components"
+  }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
