@@ -12,7 +12,7 @@ const dynamicRouters = [
   },
   {
     path: 'examine',
-    name: 'Examine',
+    name: 'examine',
     meta: {
       title: '审核管理',
       icon: ''
@@ -30,7 +30,7 @@ const dynamicRouters = [
       },
       {
         path: 'theme',
-        name: 'Theme',
+        name: 'theme',
         component: () => import(/* webpackChunkName: "theme" */'../../views/examine/theme/theme.vue'),
         meta: {
           title: '主题审核',

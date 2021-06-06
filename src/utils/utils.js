@@ -4,6 +4,8 @@
  * @param router 全部路由数组
  * @returns [{},{}] 数组对象 name作为跳转path，title路由名字
  */
+import el from "element-ui/src/locale/lang/el";
+
 export function breadcrumbName (path = [], router = []) {
   const routerNameObj = []
   router.forEach((v, i) => {
@@ -64,6 +66,34 @@ export function setDefaultRedirect (allRouter) {
       setDefaultRedirect(item.children)
     }
   })
+}
+
+/**
+ *  获取默认路由
+ * @param allRouter
+ * @param routerName
+ * @returns {{name: string, title: string}}
+ */
+export function getDefaultRouter (allRouter, routerName) {
+  let tag = {
+    title: '',
+    name: '',
+    affix: true
+  };
+
+  allRouter.forEach((item, index) => {
+
+    if (item.name !== routerName) {
+      if (item.children && item.children.length > 0) {
+        getDefaultRouter(item.children, routerName)
+      }
+    }else if (item.name === routerName) {
+      tag.name = item.name
+      tag.title = item.meta.title
+    }
+
+  })
+  return tag
 }
 
 /**

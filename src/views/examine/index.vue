@@ -1,14 +1,18 @@
 <template>
-  <div>
     <transition name="manAnimation" mode="out-in">
-      <router-view />
+      <keep-alive :include="excludeKeepName">
+        <router-view />
+      </keep-alive>
     </transition>
-  </div>
 </template>
 
 <script>
+  import { mapState} from 'vuex'
 export default {
-  name: 'examine'
+  name: 'examine',
+  computed:{
+    ...mapState('tagsView',['excludeKeepName'])
+  }
 }
 </script>
 

@@ -27,6 +27,15 @@ axios.interceptors.request.use(function (config) {
   count++
   config.timeout = 5000 // 请求超时
 
+  /* 开启loading */
+  loadingInstance = Loading.service({
+    lock: true,
+    text: 'Loading',
+    fullscreen: false,
+    spinner: 'el-icon-loading',
+    background: 'rgba(0, 0, 0, 0.5)'
+  })
+
   /* 请求头添加token login除外 */
   if (config.url !== '/api/login') {
     config.headers.Authorization = store.state.user.token.token
@@ -39,22 +48,16 @@ axios.interceptors.request.use(function (config) {
   })
 
   /* 拦截路由中没有的权限 */
+  const rules = router.currentRoute.meta.rules || [];
   /* 获取当前路由的权限数组 */
-  const rules = router.currentRoute.meta.rules
+  console.log(router.currentRoute,rules)
   /* 如果有权限数组 需要的权限在规则数组中没找到返回 -1  */
-  if (rules && rules.indexOf(rulesType[config.method]) === -1) {
+  if (rules.length && rules.indexOf(rulesType[config.method]) === -1) {
     /* 说明 没有操作权限  取消请求 */
     cancel('没有操作权限')
   }
 
-  /* 开启loading */
-  loadingInstance = Loading.service({
-    lock: true,
-    text: 'Loading',
-    fullscreen: false,
-    spinner: 'el-icon-loading',
-    background: 'rgba(0, 0, 0, 0.5)'
-  })
+
 
   return config
 }, function (error) {

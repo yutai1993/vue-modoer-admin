@@ -8,7 +8,7 @@ const adminRouters = [
     }
   },
   {
-    name: 'Examine',
+    name: 'examine',
     meta: {
       rules: []
     },
@@ -20,7 +20,7 @@ const adminRouters = [
         }
       },
       {
-        name: 'Theme',
+        name: 'theme',
         meta: {
           rules: ['view', 'delete']
         }

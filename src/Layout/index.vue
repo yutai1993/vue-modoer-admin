@@ -16,14 +16,16 @@
 
     </el-aside>
     <el-container>
-      <el-header style="height: 60px">
+      <el-header style="height: auto">
         <!--页头-->
         <top-header :isCollapse="isCollapse" @header-button="isCollapsehandle"/>
-
+        <TagsView></TagsView>
       </el-header>
       <el-main>
         <transition name="manAnimation" mode="out-in">
+          <keep-alive :include="excludeKeepName">
             <router-view/>
+          </keep-alive>
         </transition>
       </el-main>
     </el-container>
@@ -35,10 +37,12 @@
 import { mapState } from 'vuex'
 import AsideMenu from './components/AsideMenu'
 import TopHeader from './components/TopHeader/TopHeader'
+import TagsView from "./components/TopHeader/tagsView";
 
 export default {
   name: 'Layout',
   components: {
+    TagsView,
     TopHeader,
     AsideMenu
   },
@@ -49,7 +53,7 @@ export default {
       ison: true,
       modoerMask: false,
       isCollapseW200: '200px',
-      isCollapseW220: '220px'
+      isCollapseW220: '220px',
     }
   },
   /* 挂载之前初始化侧边栏 */
@@ -60,6 +64,7 @@ export default {
   mounted () {
     /* 注册页面事件 */
     addEventListener('resize', this.getResize)
+
   },
 
   updated () {
@@ -89,7 +94,9 @@ export default {
 
   computed: {
     /* 展开收起 */
-    ...mapState('Layout', ['isCollapse'])
+    ...mapState('Layout', ['isCollapse']),
+    ...mapState('tagsView',['excludeKeepName'])
+
   },
 
   methods: {
@@ -154,6 +161,11 @@ export default {
 </script>
 
 <style lang="scss">
+
+  .el-header{
+    box-shadow: 8px 3px 6px 0 #ccc;
+    z-index: 999;
+  }
 
   .on {
     position: fixed;

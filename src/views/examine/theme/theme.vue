@@ -9,7 +9,10 @@
 
 <script>
 export default {
-  name: 'theme'
+  name: 'theme',
+  mounted() {
+
+  }
 }
 </script>
 

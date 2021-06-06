@@ -57,7 +57,12 @@ import {
   BreadcrumbItem,
   Form,
   FormItem,
-  Input
+  Input,
+  Tag,
+  Tabs,
+  TabPane,
+  Table,
+  TableColumn
 
 } from 'element-ui'
 
@@ -84,6 +89,11 @@ Vue.use(BreadcrumbItem)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)
+Vue.use(Tag)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Table)
+Vue.use(TableColumn)
 
 Vue.component(CollapseTransition.name, CollapseTransition) /* element-ui 动画 */
 
