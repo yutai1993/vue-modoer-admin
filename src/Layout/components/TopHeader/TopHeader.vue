@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    class="el-menu-demo"
+    class="el-menu-demo "
     mode="horizontal"
     @select="handleSelect"
     :background-color="variables.TopHeaderBg"
@@ -19,8 +19,8 @@
       </el-breadcrumb>
 
     </li>
-    <el-submenu index="2">
-      <template slot="title" class="modoer-user">个人中心</template>
+    <el-submenu index="2" class="modoer-user">
+      <template slot="title" >个人中心</template>
       <el-menu-item index="2-1">修改密码 <i class="el-icon-arrow-right"></i></el-menu-item>
       <el-menu-item index="2-2">前台首页 <i class="el-icon-arrow-right"></i></el-menu-item>
       <el-menu-item index="2-3">退出 <i class="el-icon-arrow-right"></i></el-menu-item>
@@ -83,40 +83,27 @@ export default {
 </script>
 
 <style lang="scss">
-
-  /* header重构 */
-  .el-menu--horizontal {
-    position: static;
-    display: flex;
-    justify-content: space-between;
+  .el-menu.el-menu--horizontal{
+    border: 0;
   }
-
-  .el-menu--horizontal > .el-submenu .el-submenu__title {
-    position: static;
-  }
-
-  .el-menu::after, .el-menu::before {
-    display: none;
-  }
-
-  .el-menu--horizontal > .el-submenu[role="menuitem"] {
-    float: initial;
-  }
-
   /* 左侧按钮 */
   .submenu-left {
     color: white;
     padding-left: 10px;
-    display: flex;
-    align-items: center;
+    height: 60px;
+    line-height: 60px;
 
     > i {
       cursor: pointer;
+      padding: 5px;
     }
 
     /* 面包屑 */
     .el-breadcrumb {
-      margin-left: 20px;
+      margin-left: 10px;
+      display: inline-block;
+      vertical-align: middle;
+
     }
   }
 
@@ -129,10 +116,20 @@ export default {
   }
 
   /* header右侧下拉菜单 右箭头图标 */
+
+  .el-menu-demo .modoer-user {
+    float: right;
+  }
+
   .el-menu--popup > li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: relative;
+
+    i {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+    }
   }
 
   /* 面包屑重置样式 */

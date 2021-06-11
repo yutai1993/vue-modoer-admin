@@ -6,6 +6,7 @@ import './router/permission/permission' /* 路由前置守卫 */
 import './directive/directive' /* 自定义指令 */
 import 'element-ui/lib/theme-chalk/base.css' /* element-ui 动画 */
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition' /* element-ui 动画 */
+import './assets/css/_normalize.scss'
 
 import './mock/index' /* 路由拦截 */
 
@@ -30,7 +31,8 @@ import {
   BreadcrumbItem,
   Form,
   FormItem,
-  Input
+  Input,
+  Scrollbar
 
 } from 'element-ui'
 
@@ -55,6 +57,7 @@ Vue.use(BreadcrumbItem)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)
+Vue.use(Scrollbar)
 
 Vue.component(CollapseTransition.name, CollapseTransition) /* element-ui 动画 */
 

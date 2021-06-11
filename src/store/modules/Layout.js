@@ -7,10 +7,10 @@ export default {
     activePath: ''
   }),
   mutations: {
-    setCollapse (state) {
+    ACTIONSETCOLLAPSE (state) {
       state.isCollapse = !state.isCollapse
     },
-    setResize (state, parameter) {
+    ACTIONSETRESIZE (state, parameter) {
       state.isCollapse = parameter
     },
     setBreadcrumb (state, arr) {
@@ -20,6 +20,19 @@ export default {
       state.activePath = activePath
     }
   },
-  actions: { },
+  actions: {
+    setCollapse (state) {
+      return new Promise(resolve => {
+        state.commit('ACTIONSETCOLLAPSE')
+        resolve()
+      })
+    },
+    setResize (state, parameter) {
+      return new Promise(resolve => {
+        state.commit('ACTIONSETRESIZE', parameter)
+        resolve()
+      })
+    }
+  },
   getters: { }
 }
