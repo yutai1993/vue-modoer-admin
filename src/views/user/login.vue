@@ -11,7 +11,7 @@
         <el-input v-model="ruleForm.security"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="medium" @click="submitForm('ruleForm')">提交</el-button>
+        <el-button type="primary" size="medium" @click="submitForm('ruleForm')">登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -67,20 +67,25 @@ export default {
 </script>
 
 <style lang="scss">
+
   .modoer-login {
-    height: 100%;
+    position: relative;
+    height: 100vh;
     border-top: 1px solid transparent;
-    background-color: #95aaba;
+    background: rgba(64, 64, 194, 0.1);
 
     .demo-ruleForm {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       width: 500px;
-      margin: 180px auto 0;
       padding: 44px 65px 4px 0px;
-      background-color: #4884B5;
+      background-color: #fff;
       box-shadow: 0px 3px 10px #bbb;
 
       .el-form-item__label {
-        color: #dbe1ec;
+      //  color: #dbe1ec;
       }
       .el-button{
         width: 100%;

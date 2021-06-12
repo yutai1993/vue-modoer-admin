@@ -33,7 +33,7 @@
 import variables from '@/assets/css/var.scss'
 import { mapState } from 'vuex'
 import { Message } from 'element-ui'
-import { removeSessionItem } from '@/utils/utils'
+import { removeStorageItem } from '@/utils/utils'
 export default {
   name: 'TopHeader',
   props: {
@@ -69,8 +69,8 @@ export default {
           message: '首页'
         })
       } else if (key === '2-3') {
-        removeSessionItem('token')
-        removeSessionItem('userRouters')
+        removeStorageItem('token')
+        removeStorageItem('userRouters')
         location.reload()
       }
     },

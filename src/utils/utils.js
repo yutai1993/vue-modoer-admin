@@ -71,21 +71,21 @@ export function setDefaultRedirect (allRouter) {
  * @param key
  * @param v
  */
-export function setSessionItem (key, v) {
-  sessionStorage.setItem(key, JSON.stringify(v))
+export function setStorageItem (key, v) {
+  localStorage.setItem(key, JSON.stringify(v))
 }
 
 /**
  *  获取SessionItem
  * @returns {any}
  */
-export function getSessionItem (key) {
-  return JSON.parse(sessionStorage.getItem(key))
+export function getStorageItem (key) {
+  return JSON.parse(localStorage.getItem(key))
 }
 
 /**
  *  删除SessionItem
  */
-export function removeSessionItem (key) {
-  sessionStorage.removeItem(key)
+export function removeStorageItem (key) {
+  localStorage.removeItem(key)
 }
