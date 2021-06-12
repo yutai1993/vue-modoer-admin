@@ -1,4 +1,4 @@
-import { setSessionItem, getSessionItem, filterRouters, setDefaultRedirect } from '../../utils/utils'
+import { setStorageItem, getStorageItem, filterRouters, setDefaultRedirect } from '../../utils/utils'
 import { getRouters } from '../../api/users/users'
 import dynamicRouters from '../../router/dynamicRouter/dynamicRouters'
 import router, { DynamicRouter } from '../../router'
@@ -7,14 +7,14 @@ export default {
   namespaced: true,
   state () {
     return {
-      token: getSessionItem('token') || {},
+      token: getStorageItem('token') || {},
       permissionList: [] /* 动态菜单 */
     }
   },
 
   mutations: {
     SETTOKEN (state, token) {
-      setSessionItem('token', token)
+      setStorageItem('token', token)
       state.token = token
     },
     SETROUTERS (state, routers) {
@@ -25,13 +25,13 @@ export default {
   actions: {
     async EFTH_ROUTERS ({ commit }) {
       /* 如果本地没有 发送Ajax获取 */
-      if (!getSessionItem('userRouters')) {
+      if (!getStorageItem('userRouters')) {
         const userRouters = await getRouters()
         /* 保存在本地 */
-        setSessionItem('userRouters', userRouters)
+        setStorageItem('userRouters', userRouters)
       }
       /* 从本地获取 */
-      const data = getSessionItem('userRouters')
+      const data = getStorageItem('userRouters')
       if (data) {
         /* 过滤后 */
         const Routers = filterRouters(dynamicRouters, data.routers)

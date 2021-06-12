@@ -4,6 +4,7 @@
 </template>
 
 <script>
+  const elementResizeDetectorMaker = require("element-resize-detector");
   import echartsTitle from './Echarts-title'
   import echartsGrid from './Echarts-grid'
   import echartsXAxis from "./Echarts-xAxis";
@@ -26,7 +27,8 @@
     data() {
       return {
         myChart: null,
-        timeId: null
+        timeId: null,
+        erd: null
       }
     },
 
@@ -40,17 +42,25 @@
 
     mounted() {
 
-      // 监听页面变化 重置图表尺寸
-      addEventListener('resize', this.resizeInnerWidth)
       // 接下来的使用就跟之前一样，初始化图表，设置配置项
-      this.myChart = this.$Echarts.init(document.getElementById('main'));
+      let main = document.getElementById('main');
+      this.myChart = this.$Echarts.init(main);
       this.filterInterval()
       this.initCharts();
-      this.$nextTick(() => {
-        this.myChart.resize()
-      })
-    },
 
+      // 使用默认选项(将使用基于对象的方法)。
+      this.erd = elementResizeDetectorMaker();
+      // 使用超快速滚动的方法。这是推荐的策略。
+      let erdUltraFast = elementResizeDetectorMaker({
+        strategy: "scroll" //<- 超性能。
+      });
+      let that = this;
+      // 监听元素大小改变
+      this.erd.listenTo(main, function(element) {
+        that.myChart.resize()
+      });
+
+    },
 
     methods: {
       // 配置项
@@ -70,15 +80,6 @@
         })
       },
 
-      /* 自动调整 */
-      resizeInnerWidth() {
-        this.filterInterval()
-        this.timeId = setTimeout(()=>{
-          this.myChart.resize()
-          clearTimeout(this.timeId)
-        },200)
-
-      },
       /* 获取body的宽度 number */
       getInnerWidth() {
         const {body} = document;
@@ -92,12 +93,11 @@
         }
       }
 
-
     },
 
     beforeDestroy() {
       /* 组件销毁之前 卸载监听事件 */
-      removeEventListener('resize', this.resizeInnerWidth)
+      this.erd.uninstall(document.getElementById('main'));
     }
   }
 </script>

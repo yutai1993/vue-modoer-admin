@@ -19,12 +19,6 @@ $breadcrumbCurrentColor: #D1A844; /* 面包屑当前路由颜色 */
 
 /* 导出 */
 
-      /*
-      计算属性中使用
-      variables () {
-        return variables
-      }
-      */
 :export {
   menuBg: $menuBg;
   textColor: $textColor;

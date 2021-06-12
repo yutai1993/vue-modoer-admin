@@ -6,7 +6,7 @@ import './router/permission/permission' /* 路由前置守卫 */
 import './directive/directive' /* 自定义指令 */
 import 'element-ui/lib/theme-chalk/base.css' /* element-ui 动画 */
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition' /* element-ui 动画 */
-
+import './assets/css/_normalize.scss'
 import '@/components/BaseComponents' /* base-icon-svg 组件 */
 
 import './mock/index' /* 路由拦截 */
@@ -33,6 +33,7 @@ import {
 echarts.use(
   [TitleComponent, TooltipComponent, GridComponent, LineChart, CanvasRenderer, LegendComponent]
 );
+
 
 import {
   Container,
@@ -62,7 +63,8 @@ import {
   Tabs,
   TabPane,
   Table,
-  TableColumn
+  TableColumn,
+  Scrollbar,
 
 } from 'element-ui'
 
@@ -94,6 +96,8 @@ Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Scrollbar)
+
 
 Vue.component(CollapseTransition.name, CollapseTransition) /* element-ui 动画 */
 

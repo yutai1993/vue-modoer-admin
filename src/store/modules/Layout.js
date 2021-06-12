@@ -4,13 +4,13 @@ export default {
   state: () => ({
     isCollapse: false, /* 收起菜单 */
     breadcrumb: [], /* 面包屑 */
-    activePath: ''
+    activePath: '' /* 选中的 path name跳转 */
   }),
   mutations: {
-    setCollapse (state) {
+    ACTIONSETCOLLAPSE (state) {
       state.isCollapse = !state.isCollapse
     },
-    setResize (state, parameter) {
+    ACTIONSETRESIZE(state, parameter){
       state.isCollapse = parameter
     },
     setBreadcrumb (state, arr) {
@@ -20,6 +20,21 @@ export default {
       state.activePath = activePath
     }
   },
-  actions: { },
+  actions: {
+    setCollapse (state) {
+      return new Promise(resolve => {
+        state.commit('ACTIONSETCOLLAPSE')
+        resolve()
+      })
+
+    },
+    setResize (state, parameter) {
+      return new Promise(resolve => {
+        state.commit('ACTIONSETRESIZE', parameter)
+        resolve()
+      })
+
+    },
+  },
   getters: { }
 }

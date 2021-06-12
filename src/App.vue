@@ -4,13 +4,14 @@
   </div>
 </template>
 
-<style lang="scss">
-  html,body{
-    height: 100%;
-    margin: 0;
+<script>
+  import { removeStorageItem } from './utils/utils'
+  export default {
+    mounted () {
+      addEventListener('beforeunload', () => {
+        removeStorageItem('token')
+        removeStorageItem('userRouters')
+      })
+    }
   }
-#app {
-  height: 100%;
-}
-
-</style>
+</script>
