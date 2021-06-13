@@ -2,13 +2,13 @@
   <div class="modoer-login">
     <el-form :model="ruleForm" hide-required-asterisk status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="用户名" prop="name">
-        <el-input v-model="ruleForm.name"></el-input>
+        <el-input v-model="ruleForm.name" placeholder="admin || xiaoMing"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="pass">
-        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+        <el-input type="password" v-model="ruleForm.pass" autocomplete="off" placeholder="6-8个字符"></el-input>
       </el-form-item>
       <el-form-item label="验证码" prop="security">
-        <el-input v-model="ruleForm.security"></el-input>
+        <el-input v-model="ruleForm.security" placeholder="随便输"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="medium" @click="submitForm('ruleForm')">提交</el-button>

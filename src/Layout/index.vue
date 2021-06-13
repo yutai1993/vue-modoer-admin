@@ -156,10 +156,7 @@
 
 
     },
-    /* 销毁之前解绑事件 */
-    beforeDestroy() {
-      removeEventListener('resize', this.setResize)
-    }
+
 
   }
 </script>
