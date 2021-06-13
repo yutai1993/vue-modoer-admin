@@ -10,7 +10,7 @@ export default {
     ACTIONSETCOLLAPSE (state) {
       state.isCollapse = !state.isCollapse
     },
-    ACTIONSETRESIZE(state, parameter){
+    ACTIONSETRESIZE (state, parameter) {
       state.isCollapse = parameter
     },
     setBreadcrumb (state, arr) {
@@ -26,15 +26,13 @@ export default {
         state.commit('ACTIONSETCOLLAPSE')
         resolve()
       })
-
     },
     setResize (state, parameter) {
       return new Promise(resolve => {
         state.commit('ACTIONSETRESIZE', parameter)
         resolve()
       })
-
-    },
+    }
   },
   getters: { }
 }

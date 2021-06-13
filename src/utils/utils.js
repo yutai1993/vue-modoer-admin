@@ -4,8 +4,6 @@
  * @param router 全部路由数组
  * @returns [{},{}] 数组对象 name作为跳转path，title路由名字
  */
-import el from "element-ui/src/locale/lang/el";
-
 export function breadcrumbName (path = [], router = []) {
   const routerNameObj = []
   router.forEach((v, i) => {
@@ -75,23 +73,21 @@ export function setDefaultRedirect (allRouter) {
  * @returns {{name: string, title: string}}
  */
 export function getDefaultRouter (allRouter, routerName) {
-  let tag = {
+  const tag = {
     title: '',
     name: '',
     affix: true
-  };
+  }
 
   allRouter.forEach((item, index) => {
-
     if (item.name !== routerName) {
       if (item.children && item.children.length > 0) {
         getDefaultRouter(item.children, routerName)
       }
-    }else if (item.name === routerName) {
+    } else if (item.name === routerName) {
       tag.name = item.name
       tag.title = item.meta.title
     }
-
   })
   return tag
 }
@@ -120,22 +116,18 @@ export function removeStorageItem (key) {
   localStorage.removeItem(key)
 }
 
-
 /**
  * 为任意的一个元素，绑定任意的一个事件
  * @param element
  * @param type
  * @param fn
  */
-export function addEventListener(element, type, fn) {
+export function addEventListener (element, type, fn) {
   if (element.addEventListener) {
-    element.addEventListener(type, fn, false);
+    element.addEventListener(type, fn, false)
   } else if (element.attachEvent) {
-    element.attachEvent("on" + type, fn);
+    element.attachEvent('on' + type, fn)
   } else {
-    element["on" + type] = fn;
+    element['on' + type] = fn
   }
-
 }
-
-

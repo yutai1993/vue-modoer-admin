@@ -93,7 +93,6 @@ export default {
     height: 60px;
     line-height: 60px;
 
-
     > i {
       cursor: pointer;
       padding: 5px;

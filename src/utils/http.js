@@ -48,16 +48,13 @@ axios.interceptors.request.use(function (config) {
   })
 
   /* 拦截路由中没有的权限 */
-  const rules = router.currentRoute.meta.rules || [];
+  const rules = router.currentRoute.meta.rules || []
   /* 获取当前路由的权限数组 */
-  console.log(router.currentRoute,rules)
   /* 如果有权限数组 需要的权限在规则数组中没找到返回 -1  */
   if (rules.length && rules.indexOf(rulesType[config.method]) === -1) {
     /* 说明 没有操作权限  取消请求 */
     cancel('没有操作权限')
   }
-
-
 
   return config
 }, function (error) {

@@ -7,11 +7,11 @@
 </template>
 
 <script>
-  import { mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'examine',
-  computed:{
-    ...mapState('tagsView',['excludeKeepName'])
+  computed: {
+    ...mapState('tagsView', ['excludeKeepName'])
   }
 }
 </script>

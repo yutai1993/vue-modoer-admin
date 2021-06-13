@@ -16,25 +16,25 @@ let ogj = [{
  * @param seriesArr
  * @returns {[]}
  */
-export default function echartsSeries(seriesArr = []) {
-  let arrSeries = [];
+export default function echartsSeries (seriesArr = []) {
+  const arrSeries = []
   seriesArr.forEach((item, index) => {
-    let seriesObj = { // 折线图
+    const seriesObj = { // 折线图
       name: '',
       data: '',
       type: '',
       smooth: true,
       itemStyle: {
-       color: '', //改变折线点的颜色
+        color: '' // 改变折线点的颜色
       },
       lineStyle: {
-        color: '' //改变折线颜色
+        color: '' // 改变折线颜色
       }
-    };
+    }
     seriesObj.name = item.name,
     seriesObj.type = item.type,
     seriesObj.data = item.arrValue
-    if (item.fillColor){
+    if (item.fillColor) {
       seriesObj.areaStyle = {}
       seriesObj.areaStyle.color = item.fillColor
     }
@@ -42,7 +42,6 @@ export default function echartsSeries(seriesArr = []) {
     seriesObj.lineStyle.color = item.lineColor
 
     arrSeries.push(seriesObj)
-
-  });
+  })
   return arrSeries
 }

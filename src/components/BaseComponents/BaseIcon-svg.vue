@@ -5,21 +5,21 @@
 </template>
 
 <script>
-  export default {
-    name: "BaseIcon-svg",
-    props: {
-      iconClass: {
-        type: String,
-        required: true
-      }
-    },
-    computed: {
-      iconName() {
-        return `#icon-${this.iconClass}`
-      }
+export default {
+  name: 'BaseIcon-svg',
+  props: {
+    iconClass: {
+      type: String,
+      required: true
     }
-
+  },
+  computed: {
+    iconName () {
+      return `#icon-${this.iconClass}`
+    }
   }
+
+}
 </script>
 
 <style>

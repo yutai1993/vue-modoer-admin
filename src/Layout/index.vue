@@ -30,135 +30,135 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
-  import { gsap } from 'gsap';
-  import AsideMenu from './components/AsideMenu'
-  import TopHeader from './components/TopHeader/TopHeader'
-  import TagsView from "./components/TopHeader/tagsView";
+import { mapState } from 'vuex'
+import { gsap } from 'gsap'
+import AsideMenu from './components/AsideMenu'
+import TopHeader from './components/TopHeader/TopHeader'
+import TagsView from './components/TopHeader/tagsView'
 
-  export default {
-    name: 'Layout',
-    components: {
-      TagsView,
-      TopHeader,
-      AsideMenu
-    },
+export default {
+  name: 'Layout',
+  components: {
+    TagsView,
+    TopHeader,
+    AsideMenu
+  },
 
-    data() {
-      return {
-        Mask: false,
-        minFlag: false,
-        paddingLeft: 200,
-        tweenedNumber: 200
+  data () {
+    return {
+      Mask: false,
+      minFlag: false,
+      paddingLeft: 200,
+      tweenedNumber: 200
+    }
+  },
+
+  mounted () {
+    /* 注册页面改变事件 */
+    addEventListener('resize', this.setResize)
+    this.initResize()
+    this.setResize()
+  },
+
+  updated () {
+    this.$store.commit('Layout/setActivePath', this.$route.name)
+    this.$refs.menu.breadcrumb(this.$route.path)
+  },
+
+  watch: {
+    isCollapse (flag) {
+      const w = this.getBodyWidth()
+      if (w > 750) {
+        this.gsapTo(flag)
+      }
+    }
+  },
+
+  computed: {
+    /* 展开收起 */
+    ...mapState('Layout', ['isCollapse']),
+    ...mapState('tagsView', ['excludeKeepName'])
+
+  },
+
+  methods: {
+
+    gsapTo (flag) {
+      if (flag) {
+        gsap.to(this.$data, { duration: 0.5, tweenedNumber: 64, paddingLeft: 64 })
+      } else {
+        gsap.to(this.$data, { duration: 0.5, tweenedNumber: 200, paddingLeft: 200 })
       }
     },
 
-
-    mounted() {
-      /* 注册页面改变事件 */
-      addEventListener('resize', this.setResize)
-      this.initResize()
-      this.setResize()
-    },
-
-    updated() {
-      this.$store.commit('Layout/setActivePath', this.$route.name)
-      this.$refs.menu.breadcrumb(this.$route.path)
-    },
-
-    watch: {
-      isCollapse (flag) {
-        const w = this.getBodyWidth()
-        if (w > 750) {
-          this.gsapTo(flag)
-        }
-      }
-    },
-
-    computed: {
-      /* 展开收起 */
-      ...mapState('Layout', ['isCollapse']),
-      ...mapState('tagsView', ['excludeKeepName']),
-
-    },
-
-    methods: {
-
-      gsapTo (flag) {
-        if (flag) {
-          gsap.to(this.$data, { duration: 0.5, tweenedNumber: 64, paddingLeft: 64 })
-        } else {
-          gsap.to(this.$data, { duration: 0.5, tweenedNumber: 200, paddingLeft: 200 })
-        }
-      },
-
-      /* 点击折叠按钮的事件回调 */
-      isCollapsehandle() {
-        const w = this.getBodyWidth()
-        if (w <= 750) {
-          this.$store.dispatch('Layout/setResize', false).then(() => {
-            this.Mask = true
-            this.paddingLeft = 0
-            this.tweenedNumber = 200
-            gsap.to('.modoer-aside', { duration: 0.5, x: 0 })
-          })
-        } else {
-          /* 点击按钮后触发回调 控制展开 收起 */
-          this.$store.dispatch('Layout/setCollapse')
-        }
-      },
-
-      initResize () {
-        const w = this.getBodyWidth()
-        if (w > 750 && w <= 970) {
-          this.$store.dispatch('Layout/setResize', true)
-          this.tweenedNumber = 64
-          this.paddingLeft = 64
-        } else if (w <= 750) {
+    /* 点击折叠按钮的事件回调 */
+    isCollapsehandle () {
+      const w = this.getBodyWidth()
+      if (w <= 750) {
+        this.$store.dispatch('Layout/setResize', false).then(() => {
+          this.Mask = true
           this.paddingLeft = 0
-          gsap.to('.modoer-aside', { duration: 0, x: '-100%' })
-        }
-      },
-
-      setResize(ev) {
-        const w = this.getBodyWidth()
-        if (w > 750 && w <= 970) {
-          this.Mask = false
-          this.$store.dispatch('Layout/setResize', true)
+          this.tweenedNumber = 200
           gsap.to('.modoer-aside', { duration: 0.5, x: 0 })
-          if (this.minFlag) {
-            this.minFlag = false
-            gsap.to(this.$data, { duration: 0.5, paddingLeft: 64 })
-          }
-        } else if (w <= 750) {
-          this.minFlag = true
-          gsap.to('.modoer-aside', { duration: 0.5, x: '-100%' })
-          gsap.to(this.$data, { duration: 0.5, paddingLeft: 0 })
-        } else {
-          this.Mask = false
-          this.$store.dispatch('Layout/setResize', false)
-          gsap.to('.modoer-aside', { duration: 0.5, x: 0 })
-          gsap.to(this.$data, { duration: 0.5, paddingLeft: 200 })
-        }
-      },
-
-      getBodyWidth(){
-        const {body} = document;
-        let rect = body.getBoundingClientRect()
-        return Math.floor(rect.width)
-
-      },
-
-      hiddenIsMask(){
-        this.Mask = false
-        gsap.to('.modoer-aside', { duration: 0.5, x: '-100%' })
-      },
-
-
+        })
+      } else {
+        /* 点击按钮后触发回调 控制展开 收起 */
+        this.$store.dispatch('Layout/setCollapse')
+      }
     },
 
+    initResize () {
+      const w = this.getBodyWidth()
+      if (w > 750 && w <= 970) {
+        this.$store.dispatch('Layout/setResize', true)
+        this.tweenedNumber = 64
+        this.paddingLeft = 64
+      } else if (w <= 750) {
+        this.paddingLeft = 0
+        gsap.to('.modoer-aside', { duration: 0, x: '-100%' })
+      }
+    },
 
+    setResize (ev) {
+      const w = this.getBodyWidth()
+      if (w > 750 && w <= 970) {
+        this.Mask = false
+        this.$store.dispatch('Layout/setResize', true)
+        gsap.to('.modoer-aside', { duration: 0.5, x: 0 })
+        if (this.minFlag) {
+          this.minFlag = false
+          gsap.to(this.$data, { duration: 0.5, paddingLeft: 64 })
+        }
+      } else if (w <= 750) {
+        this.minFlag = true
+        gsap.to('.modoer-aside', { duration: 0.5, x: '-100%' })
+        gsap.to(this.$data, { duration: 0.5, paddingLeft: 0 })
+      } else {
+        this.Mask = false
+        this.$store.dispatch('Layout/setResize', false)
+        gsap.to('.modoer-aside', { duration: 0.5, x: 0 })
+        gsap.to(this.$data, { duration: 0.5, paddingLeft: 200 })
+      }
+    },
+
+    getBodyWidth () {
+      const { body } = document
+      const rect = body.getBoundingClientRect()
+      return Math.floor(rect.width)
+    },
+
+    hiddenIsMask () {
+      this.Mask = false
+      gsap.to('.modoer-aside', { duration: 0.5, x: '-100%' })
+    }
+
+  },
+  /* 销毁之前解绑事件 */
+  beforeDestroy () {
+    removeEventListener('resize', this.setResize)
   }
+
+}
 </script>
 
 <style lang="scss">
@@ -205,5 +205,3 @@
   }
 
 </style>
-
-

@@ -9,7 +9,7 @@ VueRouter.prototype.push = function push (location) {
 
 Vue.use(VueRouter)
 
-const routes = [
+export const routes = [
   {
     path: '/login',
     name: 'login',
@@ -17,10 +17,7 @@ const routes = [
     meta: {
       name: '登录'
     }
-  }
-]
-
-export const DynamicRouter = [
+  },
   {
     path: '',
     name: 'container',

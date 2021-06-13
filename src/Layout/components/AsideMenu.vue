@@ -41,7 +41,6 @@
         </el-menu-item>
       </template>
 
-
     </el-menu>
   </el-scrollbar>
 
@@ -49,60 +48,60 @@
 
 <script>
 
-  import {mapState} from 'vuex'
-  import ChildrenMenu from './childrenMenu'
-  import variables from '@/assets/css/var.scss'
-  import {breadcrumbName} from '../../utils/utils'
+import { mapState } from 'vuex'
+import ChildrenMenu from './childrenMenu'
+import variables from '@/assets/css/var.scss'
+import { breadcrumbName } from '../../utils/utils'
 
-  export default {
-    name: 'AsideMenu',
-    components: {
-      ChildrenMenu
-    },
-    props: {
-      tweenedNumber:{
-        type: Number
-      },
-
-    },
-    mounted() {
-      this.breadcrumb(this.$route.path)
-      this.$store.commit('Layout/setActivePath', this.$route.name)
-    },
-
-    computed: {
-      /* 侧边栏 */
-      asidMenu() {
-        return this.$store.state.user.permissionList.children
-      },
-      /*  */
-      ...mapState('Layout', ['isCollapse', 'activePath']),
-
-      variables() {
-        return variables
-      }
-    },
-
-    methods: {
-
-      /* 侧边栏路由跳转 name 的方式 */
-      handleSelect(name) {
-        this.$router.push({name})
-        this.breadcrumb(this.$route.path)
-        if (this.$parent.Mask){
-          this.$parent.hiddenIsMask()
-        }
-      },
-
-      /* 面包屑 */
-      breadcrumb(path) {
-        const arr = path.split('/').filter(v => v !== '')
-        const pathName = breadcrumbName(arr, this.asidMenu)
-        this.$store.commit('Layout/setBreadcrumb', pathName)
-      }
-
+export default {
+  name: 'AsideMenu',
+  components: {
+    ChildrenMenu
+  },
+  props: {
+    tweenedNumber: {
+      type: Number
     }
+
+  },
+  mounted () {
+    this.breadcrumb(this.$route.path)
+    this.$store.commit('Layout/setActivePath', this.$route.name)
+  },
+
+  computed: {
+    /* 侧边栏 */
+    asidMenu () {
+      return this.$store.state.user.permissionList
+    },
+    /*  */
+    ...mapState('Layout', ['isCollapse', 'activePath']),
+
+    variables () {
+      return variables
+    }
+  },
+
+  methods: {
+
+    /* 侧边栏路由跳转 name 的方式 */
+    handleSelect (name) {
+      this.$router.push({ name })
+      this.breadcrumb(this.$route.path)
+      if (this.$parent.Mask) {
+        this.$parent.hiddenIsMask()
+      }
+    },
+
+    /* 面包屑 */
+    breadcrumb (path) {
+      const arr = path.split('/').filter(v => v !== '')
+      const pathName = breadcrumbName(arr, this.asidMenu)
+      this.$store.commit('Layout/setBreadcrumb', pathName)
+    }
+
   }
+}
 </script>
 
 <style lang="scss">

@@ -8,7 +8,7 @@ import router from '../router'
 Vue.directive('permission', {
   // 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
   inserted: (el, binding) => {
-    const rules = router.currentRoute.meta.rules || [];
+    const rules = router.currentRoute.meta.rules || []
     if (rules.length && rules.indexOf(binding.value.action) === -1) {
       if (binding.value.effect === 'disabled') {
         //  没有这个权限  添加禁用

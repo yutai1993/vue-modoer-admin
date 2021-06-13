@@ -51,12 +51,12 @@
 <script>
 export default {
   name: 'comment',
-  data() {
+  data () {
     return {
       tableData: [{
         date: '2016-05-03',
         name: '王小虎',
-        address: `上海市普陀区金沙江路 1518`
+        address: '上海市普陀区金沙江路 1518'
       }, {
         date: '2016-05-02',
         name: '王小虎',
@@ -88,20 +88,20 @@ export default {
   methods: {
 
     // 选中的
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    handleSelectionChange (val) {
+      this.multipleSelection = val
     },
     // 编辑
-    handleEdit(index, row) {
-      console.log(index, row);
+    handleEdit (index, row) {
+      console.log(index, row)
     },
     // 审核
-    handleSuccess(index, row){
-      console.log(index, row);
+    handleSuccess (index, row) {
+      console.log(index, row)
     },
     // 删除
-    handleDelete(index, row) {
-      console.log(index, row);
+    handleDelete (index, row) {
+      console.log(index, row)
     }
   }
 }
