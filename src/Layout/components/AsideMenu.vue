@@ -72,7 +72,7 @@ export default {
   computed: {
     /* 侧边栏 */
     asidMenu () {
-      return this.$store.state.user.permissionList.children
+      return this.$store.state.user.permissionList
     },
     /*  */
     ...mapState('Layout', ['isCollapse', 'activePath']),
