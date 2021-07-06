@@ -18,7 +18,7 @@
 
       <!-- 一级菜单 -->
       <template v-for="v in asidMenu">
-        <el-submenu v-if="v.children && v.children.length > 0" :key="v.name" :index="v.name">
+        <el-submenu v-if="v.children && v.children.length > 0 && !isHidden(v.meta)" :key="v.name" :index="v.name">
           <template slot="title">
             <i :class="[v.meta.icon ? v.meta.icon : 'el-icon-location', 'iconfont']"></i>
             <span>{{v && v.meta.title}}</span>
@@ -26,16 +26,16 @@
           <!-- 二级菜单 -->
           <template v-for="c in v.children">
             <!-- 单个 -->
-            <el-menu-item v-if="!c.children" :disabled="c.name === $route.name" :key="c.name" :index="c.name">{{c &&
+            <el-menu-item v-if="!c.children && !isHidden(c.meta)" :key="c.name" :index="c.name">{{c &&
               c.meta.title}}
             </el-menu-item>
             <!-- 无限嵌套 -->
-            <children-menu v-else-if="c.children && c.children.length > 0" :key="c.name" :children="c"/>
+            <children-menu v-else-if="c.children && c.children.length > 0 && !isHidden(c.meta)" :key="c.name" :children="c"/>
           </template>
 
         </el-submenu>
         <!-- 单个 -->
-        <el-menu-item v-else-if="!v.children" :disabled="v.name === $route.name" :key="v.name" :index="v.name">
+        <el-menu-item v-else-if="!v.children && !isHidden(v.meta)" :key="v.name" :index="v | filterExternal">
           <i :class="[v.meta.icon ? v.meta.icon : 'el-icon-menu', 'iconfont']"></i>
           <span slot="title">{{v && v.meta.title}}</span>
         </el-menu-item>
@@ -50,8 +50,9 @@
 
 import { mapState } from 'vuex'
 import ChildrenMenu from './childrenMenu'
+import {mixinIsHidden} from '@/mixin/isHidden'
 import variables from '@/assets/css/var.scss'
-import { breadcrumbName } from '../../utils/utils'
+import { breadcrumbName, isExternal } from '../../utils/utils'
 
 export default {
   name: 'AsideMenu',
@@ -64,6 +65,7 @@ export default {
     }
 
   },
+  mixins:[mixinIsHidden],
   mounted () {
     this.breadcrumb(this.$route.path)
     this.$store.commit('Layout/setActivePath', this.$route.name)
@@ -77,6 +79,7 @@ export default {
     /*  */
     ...mapState('Layout', ['isCollapse', 'activePath']),
 
+
     variables () {
       return variables
     }
@@ -86,11 +89,16 @@ export default {
 
     /* 侧边栏路由跳转 name 的方式 */
     handleSelect (name) {
-      this.$router.push({ name })
-      this.breadcrumb(this.$route.path)
-      if (this.$parent.Mask) {
-        this.$parent.hiddenIsMask()
+      if (!isExternal(name)){
+        this.$router.push({ name })
+        this.breadcrumb(this.$route.path)
+        if (this.$parent.Mask) {
+          this.$parent.hiddenIsMask()
+        }
+      }else {
+        window.open(name)
       }
+
     },
 
     /* 面包屑 */
@@ -98,6 +106,17 @@ export default {
       const arr = path.split('/').filter(v => v !== '')
       const pathName = breadcrumbName(arr, this.asidMenu)
       this.$store.commit('Layout/setBreadcrumb', pathName)
+    }
+
+  },
+
+  filters: {
+    filterExternal(v){
+      if (isExternal(v.path)){
+        return v.path
+      }else {
+        return v.name
+      }
     }
 
   }

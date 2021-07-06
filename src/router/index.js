@@ -43,7 +43,16 @@ export const routes = [
 ]
 
 const createRouter = () => new VueRouter({
-  routes
+  routes,
+  /* 路由切换时 原生的方式回滚到顶部
+  注意: 这个功能只在支持 history.pushState 的浏览器中可用。 */
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 
 const router = createRouter()

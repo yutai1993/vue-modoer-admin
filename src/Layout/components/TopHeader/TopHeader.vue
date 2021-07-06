@@ -10,8 +10,7 @@
     <li class="el-submenu submenu-left ">
       <i :class="[isCollapse? 'el-icon-s-unfold' :'el-icon-s-fold']" @click="isCollapsehandle"></i>
       <!--面包屑-->
-
-      <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb separator-class="el-icon-arrow-right" v-show="breadcrumbFlag">
         <transition-group name="breadcrumb" tag="div" mode="out-in">
           <el-breadcrumb-item v-for="item in breadcrumb" :key="item.path" :to="{name:item.path}">{{item.title}}
           </el-breadcrumb-item>
@@ -51,7 +50,7 @@ export default {
   },
 
   computed: {
-    ...mapState('Layout', ['breadcrumb']),
+    ...mapState('Layout', ['breadcrumb', 'breadcrumbFlag']),
     /* scss 变量 */
     variables () {
       return variables

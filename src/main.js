@@ -2,14 +2,25 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+
 import './router/permission/permission' /* 路由前置守卫 */
 import './directive/directive' /* 自定义指令 */
-import 'element-ui/lib/theme-chalk/base.css' /* element-ui 动画 */
-import CollapseTransition from 'element-ui/lib/transitions/collapse-transition' /* element-ui 动画 */
-import './assets/css/_normalize.scss'
+
+import './assets/css/_normalize.scss' /* 浏览器一致性 */
+
 import '@/components/BaseComponents' /* base-icon-svg 组件 */
 
-import './mock/index' /* 路由拦截 */
+
+
+/*======================= 编辑器组件 ========================================*/
+import TEditor from '@/components/TEditor/TEditor.vue'
+Vue.component('TEditor',TEditor)
+/*=========================结束=======================================*/
+
+
+
+/*================================  echarts =============================================*/
 
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core'
@@ -29,6 +40,24 @@ import {
   CanvasRenderer
 } from 'echarts/renderers'
 
+// 注册必须的组件
+echarts.use(
+  [TitleComponent, TooltipComponent, GridComponent, LineChart, CanvasRenderer, LegendComponent]
+)
+Vue.prototype.$Echarts = echarts
+
+import Echart from './components/Echarts/Echart'
+Vue.component('Echart', Echart)
+
+/*================================ 结束 ==================================================*/
+
+
+
+/*====================================== element UI ==================================================*/
+
+import 'element-ui/lib/theme-chalk/base.css' /* element-ui 动画 */
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition' /* element-ui 动画 */
+Vue.component(CollapseTransition.name, CollapseTransition) /* element-ui 动画 */
 import {
   Container,
   Row,
@@ -42,6 +71,7 @@ import {
   MenuItemGroup,
   Tooltip,
   RadioGroup,
+  Radio,
   Button,
   Icon,
   Dropdown,
@@ -53,19 +83,26 @@ import {
   Form,
   FormItem,
   Input,
+  CheckboxGroup,
+  Checkbox,
   Tag,
   Tabs,
   TabPane,
   Table,
   TableColumn,
-  Scrollbar
+  Scrollbar,
+  Select,
+  Option,
+  Message,
+  Dialog,
+  Rate,
+  Popover,
+  Popconfirm,
+  DatePicker,
+  Pagination,
+  Upload
 
 } from 'element-ui'
-
-// 注册必须的组件
-echarts.use(
-  [TitleComponent, TooltipComponent, GridComponent, LineChart, CanvasRenderer, LegendComponent]
-)
 
 Vue.use(Container)
 Vue.use(Row)
@@ -78,6 +115,7 @@ Vue.use(Submenu)
 Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
 Vue.use(RadioGroup)
+Vue.use(Radio)
 Vue.use(Button)
 Vue.use(Icon)
 Vue.use(Tooltip)
@@ -90,16 +128,27 @@ Vue.use(BreadcrumbItem)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
 Vue.use(Tag)
 Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Scrollbar)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Dialog)
+Vue.use(Rate)
+Vue.use(Popover)
+Vue.use(Popconfirm)
+Vue.use(DatePicker)
+Vue.use(Pagination)
+Vue.use(Upload)
 
-Vue.component(CollapseTransition.name, CollapseTransition) /* element-ui 动画 */
+Vue.prototype.$message = Message;
 
-Vue.prototype.$Echarts = echarts
+/*======================================  结束 ================================================*/
 
 Vue.config.productionTip = false
 

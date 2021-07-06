@@ -1,4 +1,4 @@
-import axios from '../../utils/http'
+ import axios from '../../utils/http'
 import store from '../../store/index'
 
 export const login = async function (data, config) {

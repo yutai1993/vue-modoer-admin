@@ -4,6 +4,7 @@ export default {
   state: () => ({
     isCollapse: false, /* 收起菜单 */
     breadcrumb: [], /* 面包屑 */
+    breadcrumbFlag: true, /* 是否显示面包屑 */
     activePath: '' /* 选中的 path name跳转 */
   }),
   mutations: {
@@ -18,6 +19,9 @@ export default {
     },
     setActivePath (state, activePath) {
       state.activePath = activePath
+    },
+    SETBREADCRUMBFLAG (state, flag) {
+      state.breadcrumbFlag = flag
     }
   },
   actions: {

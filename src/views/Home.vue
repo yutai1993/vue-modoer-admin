@@ -31,10 +31,10 @@
 </template>
 
 <script>
-import Echart from '../components/Home/Echarts/Echart'
+
 export default {
   name: 'Home',
-  components: { Echart },
+  components: {  },
   data () {
     return {
       Echarts: [

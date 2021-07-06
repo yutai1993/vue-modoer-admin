@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import BaseIconSvg from './BaseIcon-svg'
+import BaseLoading from "./BaseLoading";
 /* 注册全局组件 */
 Vue.component('BaseIconSvg', BaseIconSvg)
+Vue.component('BaseLoading', BaseLoading)
 
 /* 自动导入所有 svg文件 */
 const req = require.context('@/assets/svg', false, /\.svg$/)

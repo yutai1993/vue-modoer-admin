@@ -11,7 +11,7 @@
             closable
             :type="tag.type"
             :class="[{'active': tagActiveName === tag.name, 'affix': tag.affix}]"
-            @click="toggleHandle(tag.name)"
+            @click="toggleHandle(tag)"
             @close="handleClose(tag, index)"
             @contextmenu.prevent.native="openMenu(tag, index, $event)">
             {{tag.title}}
@@ -97,9 +97,13 @@ export default {
     },
 
     /* 切换 */
-    toggleHandle (name) {
-      this.$store.commit('tagsView/TOGGLEVIEW', name)
-      this.$router.push({ name })
+    toggleHandle (tag) {
+      this.$store.commit('tagsView/TOGGLEVIEW', tag.name)
+      if (tag.params){
+        this.$router.push({ path: tag.fullPath })
+      }else {
+        this.$router.push({ name:tag.name })
+      }
     },
     /* 删除 */
     handleClose (tag, index) {

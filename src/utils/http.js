@@ -3,9 +3,6 @@ import { Message, Loading } from 'element-ui'
 import store from '../store/index'
 import router from '../router'
 
-let loadingInstance // loading加载。。。
-let count = 0 // 请求计数器
-
 // view查看  delete删除  put修改  add添加
 const rulesType = {
   get: 'view',
@@ -18,23 +15,29 @@ const rulesType = {
 const CancelToken = axios.CancelToken
 let cancel
 
+let loadingInstance // loading加载。。。
+let count = 0 // 请求计数器
+
 // 重写库的超时默认值
 // 现在，所有使用此实例的请求都将等待2.5秒，然后才会超时
 // axios.defaults.timeout = 5000
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
-  /* 请求加1 */
-  count++
+
   config.timeout = 5000 // 请求超时
 
+  /* 请求加1 */
+  count++
   /* 开启loading */
-  loadingInstance = Loading.service({
-    lock: true,
-    text: 'Loading',
-    fullscreen: false,
-    spinner: 'el-icon-loading',
-    background: 'rgba(0, 0, 0, 0.5)'
-  })
+  if (config.method !== 'get') {
+    loadingInstance = Loading.service({
+      lock: true,
+      text: 'Loading',
+      fullscreen: true,
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.5)'
+    })
+  }
 
   /* 请求头添加token login除外 */
   if (config.url !== '/api/login') {
@@ -48,13 +51,15 @@ axios.interceptors.request.use(function (config) {
   })
 
   /* 拦截路由中没有的权限 */
-  const rules = router.currentRoute.meta.rules || []
-  /* 获取当前路由的权限数组 */
-  /* 如果有权限数组 需要的权限在规则数组中没找到返回 -1  */
-  if (rules.length && rules.indexOf(rulesType[config.method]) === -1) {
-    /* 说明 没有操作权限  取消请求 */
-    cancel('没有操作权限')
-  }
+ if (config.url !== '/api/login') {
+   /* 获取当前路由的权限数组 */
+   const rules = router.currentRoute.meta.rules || []
+   /* 如果有权限数组 需要的权限在规则数组中没找到返回 -1  */
+   if (rules.length && rules.indexOf(rulesType[config.method]) === -1) {
+     /* 说明 没有操作权限  取消请求 */
+     cancel('没有操作权限')
+   }
+ }
 
   return config
 }, function (error) {
@@ -66,7 +71,7 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
   /* 请求减1 */
   count--
-  if (count === 0) {
+  if (count === 0 && loadingInstance) {
     loadingInstance.close()
   }
   const axiosData = response.data
@@ -127,6 +132,8 @@ axios.interceptors.response.use(function (response) {
   } else {
     // error.message = "连接到服务器失败";
   }
+
+  // 发生错误关闭loading
   loadingInstance.close()
 
   // 取消发送请求的错误

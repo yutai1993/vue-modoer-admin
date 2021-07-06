@@ -1,4 +1,82 @@
 /**
+ * 检查是否为外链
+ * @param path
+ * @returns {boolean}
+ */
+export function isExternal(path) {
+  return /^(https?:|http:|mailto:|tel:)/.test(path)
+}
+
+
+/**
+ *  判断字符是否为汉字，
+ * @param s
+ * @returns {boolean}
+ */
+function isChinese(s) {
+  return /[\u4e00-\u9fa5]/.test(s);
+}
+
+/**
+ *  汉字转Unicode编码
+ * @param str
+ * @returns {string}
+ */
+export function ch2Unicdoe(str) {
+  if (!str) {
+    return;
+  }
+  var unicode = '';
+  for (var i = 0; i < str.length; i++) {
+    var temp = str.charAt(i);
+    if (isChinese(temp)) {
+      unicode += '\\u' + temp.charCodeAt(0).toString(16);
+    } else {
+      unicode += temp;
+    }
+  }
+  return unicode;
+}
+
+
+/**
+ *  Unicode编码 转汉字
+ * @param str
+ * @returns {string}
+ */
+export function unicode2Ch(str) {
+  if (!str) {
+    return;
+  }
+  // 控制循环跃迁
+  var len = 1;
+  var result = '';
+  // 注意，这里循环变量的变化是i=i+len 了
+  for (var i = 0; i < str.length; i = i + len) {
+    len = 1;
+    var temp = str.charAt(i);
+    if (temp == '\\') {
+      // 找到形如 \u 的字符序列
+      if (str.charAt(i + 1) == 'u') {
+        // 提取从i+2开始(包括)的 四个字符
+        var unicode = str.substr((i + 2), 4);
+        // 以16进制为基数解析unicode字符串，得到一个10进制的数字
+        result += String.fromCharCode(parseInt(unicode, 16).toString(10));
+        // 提取这个unicode经过了5个字符， 去掉这5次循环
+        len = 6;
+      } else {
+        result += temp;
+      }
+    } else {
+      result += temp;
+    }
+  }
+  return result;
+
+}
+
+
+/**
  * 获取当前路由面包屑
  * @param path ["路由的名字", "路由的名字"]
  * @param router 全部路由数组
@@ -67,7 +145,7 @@ export function setDefaultRedirect (allRouter) {
 }
 
 /**
- *  获取默认路由
+ *  获取默认路由 tagsView用到
  * @param allRouter
  * @param routerName
  * @returns {{name: string, title: string}}
@@ -130,4 +208,24 @@ export function addEventListener (element, type, fn) {
   } else {
     element['on' + type] = fn
   }
+}
+
+/**
+ * 提取带参数的url中的参数
+ * @param url  url
+ * @returns {{}|any}  对象的形式返回
+ */
+export function param2Obj(url) {
+  const search = url.split('?')[1]
+  if (!search) {
+    return {}
+  }
+  return JSON.parse(
+    '{"' +
+    decodeURIComponent(search)
+      .replace(/"/g, '\\"')
+      .replace(/&/g, '","')
+      .replace(/=/g, '":"') +
+    '"}'
+  )
 }

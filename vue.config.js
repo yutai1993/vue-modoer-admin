@@ -4,6 +4,8 @@ function resolve (dir) {
 }
 module.exports = {
   // runtimeCompiler: true, /* 运行时构建 */
+  lintOnSave: false,
+
   css: {
     loaderOptions: {
       scss: {
@@ -14,6 +16,13 @@ module.exports = {
     }
   },
   chainWebpack: config => {
+
+    // 添加别名
+    config.resolve.alias
+      .set("vue$", "vue/dist/vue.runtime.esm.js")
+      .set("@", resolve("src"))
+      .set("@public", resolve("public"));
+
     // GraphQL Loader
     config.module
     // set svg-sprite-loader
@@ -34,19 +43,26 @@ module.exports = {
       .end()
   },
   devServer: {
-    // proxy: {
-    //   '/api': {
-    //     target: 'https://api-hmugo-web.itheima.net', // 当有/ajax 开头的请求路径 就会转发到 target
-    //     //   ws: true, //WebSocket 使用
-    //     changeOrigin: true,
-    //     // pathRewrite: {
-    //     //   '^/api': ''
-    //     // }
-    //   },
-    //   '/foo': {
-    //     target: '<other_url>'
-    //   }
-    // }
+    proxy: {
+
+      '/api': {
+        target: 'http://localhost:3000', // 当有/api 开头的请求路径 就会转发到 target
+        //   ws: true, //WebSocket 使用
+        changeOrigin: true,
+        // pathRewrite: {
+        //   '^/api': ''
+        // }
+      },
+      '/upload': {
+        target: 'http://localhost:3000', // 当有/api 开头的请求路径 就会转发到 target
+        //   ws: true, //WebSocket 使用
+        changeOrigin: true,
+        // pathRewrite: {
+        //   '^/api': ''
+        // }
+      }
+
+    }
   }
 
 }
