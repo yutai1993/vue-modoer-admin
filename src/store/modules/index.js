@@ -4,11 +4,15 @@ import tagsView from './tagsView'
 import moduleSetting from "./moduleSetting";
 import ReviewAudit from "./ReviewAudit";
 import addTopic from "./addTopic";
+import topicPmp from "./topicPmp";
+import article from "./article";
 export default {
   Layout,
   user,
   tagsView,
   moduleSetting,
   ReviewAudit,
-  addTopic
+  addTopic,
+  topicPmp,
+  article
 }

@@ -53,8 +53,8 @@
   import 'tinymce/plugins/visualblocks'  //显示元素范围
   import 'tinymce/plugins/visualchars'  //显示不可见字符
   import 'tinymce/plugins/wordcount'  //字数统计
-  import '../../plugins/tinymce/indent2em'  //首行缩进
-  import '../../plugins/tinymce/axupimgs' // 多图上传
+  import '../../../public/tinymce/indent2em'  //首行缩进
+  import '../../../public/tinymce/axupimgs' // 多图上传
   export default {
     name: "TEditor",
     components: {

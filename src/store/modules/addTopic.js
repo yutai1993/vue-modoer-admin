@@ -1,296 +1,77 @@
+import { getTopicField, getTopicCategory, getTopicGrade, getTopicStyle } from "../../api/topic";
+
 export default {
   namespaced: true,
   state: () => ({
-    addTopicData: [],
-    optionsActive: {}
+    topicField: {}, // 主题字段
+    topicCategory1: [], // 主题一级分类
+    topicCategor2: [], // 主题二级分类
+    Grade: [], // 主题等级
+    TopicStyle: [], // 主题风格
   }),
 
   mutations:{
-    ADDTOPICDATA(state, data){
-      state.addTopicData = data
+
+    TOPICFIELD(state, data){
+      state.topicField = data
     },
-    OPTIONSACTIVE(state, dataObj){
-      state.optionsActive = dataObj
-    }
+
+    TOPICCATEGORY(state, data){
+      state.topicCategory1 = data.topicCategory1
+      state.topicCategory2 = data.topicCategory2
+    },
+
+    TOPICGRADE(state, data){
+      state.Grade = data
+    },
+
+    TOPICSTYLE(state, data){
+      state.TopicStyle = data
+    },
+
   },
 
   actions:{
 
-    fetchAddTopicData({commit}, payload){
-      setTimeout(() => {
-        let dataArr = [
-          {
-            name: '主题分类:',
-            flag: 'select',
-            fields: 'c_topicCategory',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '数据状态:',
-            flag: 'radio',
-            fields: 'c_dataSuatus',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '选择封面:',
-            flag: 'upload',
-            fields: 'c_cover',
-          }, {
-            name: '主题等级:',
-            flag: 'select',
-            fields: 'c_grade',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '主题风格:',
-            flag: 'select',
-            fields: 'c_topicStyle',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '管理员:',
-            flag: 'input',
-            fields: 'c_topicAdmin',
-          }, {
-            name: '分类:',
-            flag: 'checkbox',
-            fields: 'c_category',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '名称:',
-            flag: 'select',
-            fields: 'c_topicName',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '子名称:',
-            flag: 'select',
-            fields: 'c_subclass',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '地图坐标:',
-            flag: 'select',
-            fields: 'c_map',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '地区:',
-            flag: 'select',
-            fields: 'c_regional',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '简介:',
-            flag: 'select',
-            fields: 'c_synopsis',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '地址:',
-            flag: 'input',
-            fields: 'c_site',
-          }, {
-            name: '营业状态:',
-            flag: 'radio',
-            fields: 'c_business',
-            data: [
-              {
-                id: 1,
-                label: '黄金糕1'
-              }, {
-                id: 2,
-                label: '黄金糕2'
-              }, {
-                id: 3,
-                label: '黄金糕3'
-              }, {
-                id: 4,
-                label: '黄金糕4'
-              }, {
-                id: 5,
-                label: '黄金糕5'
-              },],
-          }, {
-            name: '联系方式:',
-            flag: 'input',
-            fields: 'c_contact',
-          }, {
-            name: '详细介绍:',
-            flag: 'textarea',
-            fields: 'c_letter',
-          },
-        ]
-        commit('ADDTOPICDATA', dataArr)
-        let optionsActive = {}
-        dataArr.forEach((item,index) => {
-          if (item.flag === 'select'){
-            optionsActive[item.fields] = ''
-          }
-          if (item.flag === 'input'){
-            optionsActive[item.fields] = ''
-          }
-          if (item.flag === 'radio'){
-            optionsActive[item.fields] = ''
-          }
-          if (item.flag === 'checkbox'){
-            optionsActive[item.fields] = []
-          }
-        })
-        commit('OPTIONSACTIVE',optionsActive)
-      },2000)
+
+    // 获取主题字段
+    async fetchTopicField({commit}){
+      let result = await getTopicField()
+      if (result.code === 200) {
+        commit('TOPICFIELD', result.data)
+      }
+
+    },
+
+    // 获取主题分类
+    async fetchTopicCategory({commit}){
+      let result = await getTopicCategory()
+      if (result.code === 200) {
+        commit('TOPICCATEGORY', result.data)
+      }
+
+    },
+
+
+    // 获取主题等级
+    async fetchTopicGrade({commit}){
+      let result = await getTopicGrade()
+      if (result.code === 200) {
+        commit('TOPICGRADE', result.data)
+      }
+
+    },
+
+
+    // 获取主题等级
+    async fetchTopicStyle ({commit}){
+      let result = await getTopicStyle()
+      if (result.code === 200) {
+        commit('TOPICSTYLE', result.data)
+      }
+
     }
+
   },
 
   getters:{

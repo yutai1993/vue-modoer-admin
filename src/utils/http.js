@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message, Loading } from 'element-ui'
+import {Message, Loading} from 'element-ui'
 import store from '../store/index'
 import router from '../router'
 
@@ -30,36 +30,36 @@ axios.interceptors.request.use(function (config) {
   count++
   /* 开启loading */
   if (config.method !== 'get') {
-    loadingInstance = Loading.service({
-      lock: true,
-      text: 'Loading',
-      fullscreen: true,
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.5)'
-    })
-  }
 
+  }
+  loadingInstance = Loading.service({
+    lock: true,
+    text: 'Loading',
+    fullscreen: true,
+    spinner: 'el-icon-loading',
+    background: 'rgba(0, 0, 0, 0.5)'
+  })
   /* 请求头添加token login除外 */
   if (config.url !== '/api/login') {
     config.headers.Authorization = store.state.user.token.token
   }
 
   /* 取消 */
-  config.cancelToken = new CancelToken(function executor (c) {
+  config.cancelToken = new CancelToken(function executor(c) {
     // executor 函数接收一个 cancel 函数作为参数
     cancel = c /* c 就是取消函数 在需要取消的地方调用 */
   })
 
   /* 拦截路由中没有的权限 */
- if (config.url !== '/api/login') {
-   /* 获取当前路由的权限数组 */
-   const rules = router.currentRoute.meta.rules || []
-   /* 如果有权限数组 需要的权限在规则数组中没找到返回 -1  */
-   if (rules.length && rules.indexOf(rulesType[config.method]) === -1) {
-     /* 说明 没有操作权限  取消请求 */
-     cancel('没有操作权限')
-   }
- }
+  if (config.url !== '/api/login') {
+    /* 获取当前路由的权限数组 */
+    const rules = router.currentRoute.meta.rules || []
+    /* 如果有权限数组 需要的权限在规则数组中没找到返回 -1  */
+    if (rules.length && rules.indexOf(rulesType[config.method]) === -1) {
+      /* 说明 没有操作权限  取消请求 */
+      cancel('没有操作权限')
+    }
+  }
 
   return config
 }, function (error) {
@@ -74,19 +74,15 @@ axios.interceptors.response.use(function (response) {
   if (count === 0 && loadingInstance) {
     loadingInstance.close()
   }
-  const axiosData = response.data
-  if (!axiosData.code) {
-    return response
-  } else {
-    switch (axiosData.code) {
-      case 200 :
-        return axiosData
-      default:
-        Message.error({
-          message: `${axiosData.msg}`
-        })
-    }
+
+  const { code, msg } = response.data
+  if ( code !== 200) {
+    Message.error({
+      message: msg
+    })
   }
+  return response.data
+
 }, function (error) {
   if (error && error.response) {
     switch (error.response.status) {

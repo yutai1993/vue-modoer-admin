@@ -50,8 +50,7 @@ export default {
         if (valid) {
           // 登录
           login(that.ruleForm).then((data) => {
-            if (data) {
-              // 保存Token
+            if (data.code === 200) {
               this.$store.commit('user/SETTOKEN', data)
               this.$router.push({ path: '/' })
             }

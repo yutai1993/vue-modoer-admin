@@ -1,6 +1,6 @@
 <template>
   <transition name="manAnimation" mode="out-in">
-    <keep-alive :include="excludeKeepName">
+    <keep-alive :include="excludeKeepName" exclude="articleeditor">
       <router-view />
     </keep-alive>
   </transition>

@@ -93,7 +93,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <el-select style="width: 100px" v-model="offsetActive" size="mini" placeholder="请选择">
+            <el-select style="width: 100px" v-model="pagesize" size="mini" placeholder="请选择">
               <el-option
                 v-for="item in filter.offset"
                 :key="item.value"
@@ -107,6 +107,7 @@
       </table>
     </div>
 
+
     <div class="topic_pop" style="margin-top: 15px">
       <div class="filter">
         <span>主题管理</span>
@@ -114,7 +115,7 @@
     </div>
     <div class="topic_pop_body_box xHeidden">
       <el-table
-        :data="filter.topicListData"
+        :data="topicList.newArray2"
         border
         style="width: 100%"
         @selection-change="handleSelectionChange">
@@ -126,54 +127,73 @@
         </el-table-column>
 
         <el-table-column
-          prop="cover"
           label="封面"
-          width="150">
+          width="100">
+          <template slot-scope="scope">
+            <el-image :src="scope.row.c_cover" fit="contain" style="max-width: 80px; max-height: 60px">
+              <div slot="placeholder" class="image-slot">
+                加载中<span class="dot">...</span>
+              </div>
+            </el-image>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="title"
           label="标题/分类/地区"
-          width="120">
+          width="220">
+          <template slot-scope="scope">
+            <div class="title">
+              <p>{{scope.row.c_topicName}}({{scope.row.c_subclass}})</p>
+              <p><span>{{scope.row.c_topicCategory}}</span> &raquo; <span>{{scope.row.c_category}}</span></p>
+              <p><span>{{scope.row.c_regional}}</span> &raquo; <span>{{scope.row.c_city}}</span></p>
+            </div>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="adj"
           label="推荐度"
           width="120">
+          <template slot-scope="scope">
+            <el-input style="width: 60px" size="mini" v-model="scope.row.c_degree" placeholder="请输入内容"/>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="views"
           label="浏览量"
           width="120">
+          <template slot-scope="scope">
+            <el-input style="width: 60px" size="mini" v-model="scope.row.c_pv" placeholder="请输入内容"/>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="grade"
+          prop="c_grade"
           label="等级"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="review"
+          prop="c_reviewNumber"
           label="点评"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="imgNumber"
+          prop="c_imgNumber"
           label="图片数量"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="msgNumber"
+          prop="c_msgNumber"
           label="留言量"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="date"
-          label="2012-03-02"
+          prop="c_date"
+          label="添加时间"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="status"
+          prop="c_dataSuatus"
           label="状态"
           width="120">
+          <template slot-scope="scope">
+            <span class="center">{{scope.row.c_dataStatus | filterTopicStatus }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           fixed="right"
@@ -191,25 +211,33 @@
     <div class="paging">
       <el-pagination
         layout="prev, pager, next"
-        :total="1000">
+        :page-size.sync="topicList.pagesize"
+        :page-count="topicList.total_pages"
+        :current-page.sync="topicList.pagenum"
+        :total="topicList.total"
+        @current-change="currentChangeHandle"
+        @prev-click="prevClickHandle"
+        @next-click="nextClickHandle">
       </el-pagination>
     </div>
 
     <!--操作按钮 -->
     <div class="Action">
-      <el-button type="primary" size="small" >更新修改</el-button>
-      <el-button type="primary" size="small" >删除所选</el-button>
+      <el-button type="primary" size="small" @click="changeHandle">更新修改</el-button>
+      <el-button type="primary" size="small" @click="deleteHandle">删除所选</el-button>
     </div>
   </div>
 
 </template>
 
 <script>
-  import { mapState } from  'vuex'
+  import {mapState} from 'vuex'
+
   export default {
     name: "topicPmp",
     data() {
       return {
+        // 主题筛选 选中的
         categoryActive: '', // 主题分类选中的
         regionActive: '', // 选中的所属地区
         keywordActive: '', // 输入的关键字
@@ -218,9 +246,11 @@
         topicAdmin: '', // 主题管理员
         sortingActive: 1, // 选中的排序方式
         orderActive: 1, // 升序 | 降序
-        offsetActive: 10, // 选中的每页条数
+        pagesize: 20, // 每页条数
         multipleSelection: [], // 选中的主题对象数组
-        filter:{
+
+        // ==================主题筛选所需数据===============================
+        filter: {
           category: [
             {
               value: '选项1',
@@ -262,10 +292,10 @@
             {
               value: 1,
               label: '默认排序'
-            },{
+            }, {
               value: 2,
               label: '登记时间'
-            },{
+            }, {
               value: 3,
               label: '推荐度'
             },
@@ -274,149 +304,207 @@
             {
               value: 1,
               label: '递减'
-            },{
+            }, {
               value: 2,
               label: '递增'
             }
           ], // 升序降序
-          offset:  [
+          offset: [
             {
               value: 10,
               label: '10条'
-            },{
+            }, {
               value: 20,
               label: '20条'
             }
           ], // 每页条数
-          topicListData: [
-            {
-              id: 1,
-              cover: '封面',
-              title: '标题/分类/地区',
-              adj: '推荐度',
-              views: '浏览量',
-              grade: '等级',
-              review: '点评',
-              imgNumber: '图片数量',
-              msgNumber: '留言量',
-              date: '2012-03-02',
-              status: '状态'
-            },
-            {
-              id: 2,
-              cover: '封面',
-              title: '标题/分类/地区',
-              adj: '推荐度',
-              views: '浏览量',
-              grade: '等级',
-              review: '点评',
-              imgNumber: '图片数量',
-              msgNumber: '留言量',
-              date: '2012-03-02',
-              status: '状态'
-            },
-            {
-              id: 3,
-              cover: '封面',
-              title: '标题/分类/地区',
-              adj: '推荐度',
-              views: '浏览量',
-              grade: '等级',
-              review: '点评',
-              imgNumber: '图片数量',
-              msgNumber: '留言量',
-              date: '2012-03-02',
-              status: '状态'
-            },
-            {
-              id: 4,
-              cover: '封面',
-              title: '标题/分类/地区',
-              adj: '推荐度',
-              views: '浏览量',
-              grade: '等级',
-              review: '点评',
-              imgNumber: '图片数量',
-              msgNumber: '留言量',
-              date: '2012-03-02',
-              status: '状态'
-            },
+        },
 
-          ] // 主题数据
-        }
+        pagenum: 1, // 当前页码
       }
     },
+    watch: {
+      'topicList.pagenum'(v) {
+        this.pagenum = v
+      },
+      'topicList.pagesize'(v) {
+        this.pagesize = v
+      },
+    },
     computed: {
-      ...mapState('tagsView', ['tags'])
+      ...mapState('tagsView', ['tags']),
+      ...mapState('topicPmp', ['topicList']),
+    },
+    mounted() {
+      this.getTopicList()
     },
     methods: {
+
+      getTopicList() {
+        this.$store.dispatch('topicPmp/fetchTopicList', {
+          pagenum: this.pagenum,
+          pagesize: this.pagesize
+        })
+      },
+
+      // 修改 推荐度 浏览量
+      changeHandle(){
+        // 获取 每条数据的 id 推荐度 浏览量
+        let { newArray2 } = this.topicList
+        let arr = []
+        for (let i = 0; i < newArray2.length ; i++) {
+          let r = {}
+          r.id = newArray2[i].id
+          r.c_pv = newArray2[i].c_pv
+          r.c_degree = newArray2[i].c_degree
+          arr.push(r)
+        }
+        let params = {
+          data: {
+            arr
+          },
+          pagenum: this.pagenum,
+          pagesize: this.pagesize
+        }
+        this.$store.dispatch('topicPmp/putTopicList', params)
+      },
+
+      // 删除选中的
+      deleteHandle(){
+        let s = this.multipleSelection
+        if(s.length <= 0){
+          return
+        }
+        let arr = []
+        for (let i = 0; i < s.length ; i++) {
+          arr.push(s[i].id)
+        }
+
+        let params = {
+          data: {
+            arr
+          },
+          pagenum: this.pagenum,
+          pagesize: this.pagesize
+        }
+        this.$store.dispatch('topicPmp/deleteTopicList', params)
+      },
+
+
+      // 当前页改变时触发
+      currentChangeHandle() {
+        this.$store.dispatch('topicPmp/fetchTopicList', {
+          pagenum: this.topicList.pagenum,
+          pagesize: this.topicList.pagesize
+        })
+      },
+
+      // 用户点击上一页按钮改变当前页后触发
+      prevClickHandle() {
+        console.log('用户点击上一页按钮')
+      },
+
+      // 用户点击下一页按钮改变当前页后触发
+      nextClickHandle() {
+        console.log('用户点击下一页按钮')
+      },
+
+
       // 选中的
-      handleSelectionChange(val){
+      handleSelectionChange(val) {
         this.multipleSelection = val
       },
 
       // 查看
       handleClick(row) {
-        console.log('查看ID',row.id);
+        console.log('查看ID', row.id);
       },
       // 编辑
       editorHandle(row) {
-        console.log('编辑ID',row.id)
+        console.log('编辑ID', row.id)
         let topiceditorIndex = this.tags.findIndex(value => value.name === 'topiceditor')
         let topiceditor = this.tags.find(value => value.name === 'topiceditor')
         /* 替换 tags 中 tag数据*/
-        if(topiceditor && Object.keys(topiceditor.params).length){
+        if (topiceditor && Object.keys(topiceditor.params).length) {
           topiceditor.params.id = row.id
           this.tags.splice(topiceditorIndex, 1, topiceditor)
         }
         this.$router.push(`/topic/topicProject/topiceditor/${row.id}`);
+      }
+    },
+
+    filters: {
+
+      filterTopicStatus(value) {
+        if (value === 0) {
+          return '正常'
+        }
+        if (value === 1) {
+          return '回收站'
+        }
+        if (value === 2) {
+          return '未审核'
+        }
+
       }
     }
   }
 </script>
 
 <style lang="scss">
-  .topic{
-    .filter{
+  .topic {
+    .filter {
       background-color: #4e5b6b;
-      padding: 2px 0 2px 5px ;
+      padding: 2px 0 2px 5px;
+
       span {
         font-size: 14px;
         color: white;
       }
     }
 
-    .topic_pop_body_box{
+    .topic_pop_body_box {
       border: 1px solid #BBDCF1;
       overflow-x: auto;
-      td{
+
+      td {
         padding: 5px 4px;
         border-bottom: 1px solid #BBDCF1;
       }
-      .bg{
+
+      .bg {
         width: 100px;
         font-size: 12px;
         color: #333333;
         background-color: #F0F8FF;
       }
+
+      .image-slot {
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      .title {
+        font-size: 12px;
+      }
     }
 
-    .paging{
+    .paging {
       margin-top: 10px;
     }
-    .Action{
+
+    .Action {
       text-align: center;
     }
+
     /* 重构element 隐藏局部滚动条 主题表格 */
-    .xHeidden{
+    .xHeidden {
       overflow: hidden;
     }
 
-    .el-table--border{
+    .el-table--scrollable-x {
       margin-bottom: -17px;
-    }
-    .el-table--scrollable-x .el-table__body-wrapper{
-      overflow: scroll;
+
     }
   }
 

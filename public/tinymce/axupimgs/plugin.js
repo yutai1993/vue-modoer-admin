@@ -3,9 +3,9 @@ tinymce.PluginManager.add('axupimgs', function(editor, url) {
 	window.axupimgs={}; //扔外部公共变量，也可以扔一个自定义的位置
 
   // 注意：这里用的是后台服务器的能力  不是前台路由的能力
-  var baseURL = document.location.protocol + '//' + document.location.host;
-  var iframe1 = baseURL+'/tinymce/axupimgs/upfiles.html';
- // var iframe1 = /tinymce/axupimgs/upfiles.html'; // 选择一种
+  // var baseURL = document.location.protocol + '//' + document.location.host;
+  // var iframe1 = baseURL+'/tinymce/axupimgs/upfiles.html';
+ var iframe1 = '/tinymce/axupimgs/upfiles.html'; // 选择一种
 
     axupimgs.images_upload_handler = editor.getParam('images_upload_handler', undefined, 'function');
     axupimgs.images_upload_base_path = editor.getParam('images_upload_base_path', '', 'string');

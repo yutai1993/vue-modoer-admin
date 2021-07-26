@@ -17,8 +17,10 @@ export default {
 
   actions: {
     async REQ_MODULESETTING ({commit}) {
-      const data = await getModuleSetting()
-      commit("ALTERMODULESETTING",data.data)
+      const result = await getModuleSetting()
+      if (result.code === 200) {
+        commit("ALTERMODULESETTING",result.data)
+      }
     },
 
     async DELIVER_MODULE_SETTING ({commit},payload) {

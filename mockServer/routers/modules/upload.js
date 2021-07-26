@@ -31,7 +31,6 @@ var upload = multer({
 //处理来自页面的ajax请求。单文件上传
 //多文件上传使用upload.array('file', number)
 router.post('/api/uploadImage', upload.single('file'), function(req, res, next) {
-  console.log(req.file);
   //拼接文件上传后的路径
   var url = destination + '/' + filename;
   res.json({

@@ -35,14 +35,28 @@ let ReviewAudit = [
 
 ]
 
+let timeId;
+//  获取主题审核所需信息  date name address
 router.get('/api/ReviewAudit', (req, res) => {
   let arr = ReviewAudit.filter(value => value.status === 1)
-  return res.status(200).json({
-    data: arr,
-    code: 200,
-    msg: 'ok',
+  let v = [];
+  arr.forEach((value, index) => {
+     v.push({
+       id: value.id,
+       date: value.date,
+       name: value.name,
+       address: value.address
+     })
   })
+  timeId = setTimeout(()=>{
+    return res.status(200).json({
+      data: v,
+      code: 200,
+      msg: 'ok',
+    })
+  },1000)
 })
+
 
 router.post('/api/addReviewAudit', (req, res) => {
   const body = req.body
@@ -64,15 +78,46 @@ router.post('/api/ReviewAudit', (req, res) => {
   let itemObj = ReviewAudit.find(value => value.id === id)
   // 修改状态
   itemObj.status = status
+  timeId = setTimeout(() => {
+    return res.status(200).json({
+      code: 200,
+      msg: '修改状态成功',
+    })
+  },1000)
+
+})
+
+
+router.get('/api/editor', (req, res) => {
+  const body = req.query
+  let id = body.id.trim()
+  let item = ReviewAudit.find(value => value.id === id) || {}
+
+  let obj = {
+    id: item.id,
+    topicNameURL: item.topicNameURL,
+    name: item.name,
+    topicName: item.topicName,
+    status: item.status,
+    comprehensive: item.comprehensive,
+    rateData1: item.rateData1,
+    rateData2: item.rateData2,
+    rateData3: item.rateData3,
+    address: item.address,
+  }
   return res.status(200).json({
     code: 200,
-    msg: '修改状态成功',
+    data: obj,
+    msg: 'ok',
   })
+
+
 })
+
 
 router.put('/api/ReviewAudit', (req, res) => {
   const body = req.body
-  let r = body.editor
+  let r = body.ReviewItem
   let id = body.id
   let rItem = ReviewAudit.find(value => value.id === id)
  Object.assign(rItem, r)

@@ -20,6 +20,13 @@ Vue.component('TEditor',TEditor)
 
 
 
+/*============================  markdown 组件  ===========================================*/
+import markdown from '@/components/markdown/markdown';
+Vue.component('markdown',markdown)
+/*===============================   结束   ========================================*/
+
+
+
 /*================================  echarts =============================================*/
 
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
@@ -100,7 +107,8 @@ import {
   Popconfirm,
   DatePicker,
   Pagination,
-  Upload
+  Upload,
+  Image
 
 } from 'element-ui'
 
@@ -145,10 +153,13 @@ Vue.use(Popconfirm)
 Vue.use(DatePicker)
 Vue.use(Pagination)
 Vue.use(Upload)
+Vue.use(Image)
 
 Vue.prototype.$message = Message;
 
 /*======================================  结束 ================================================*/
+
+
 
 Vue.config.productionTip = false
 

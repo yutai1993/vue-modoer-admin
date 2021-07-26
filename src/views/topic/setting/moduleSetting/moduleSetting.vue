@@ -502,9 +502,10 @@
           parameter.type = 'second'
           parameter.data = this.secondOptions
         }
-        this.$store.dispatch('moduleSetting/DELIVER_MODULE_SETTING', parameter).then((data)=>{
-          this.$message.success('修改成功')
-
+        this.$store.dispatch('moduleSetting/DELIVER_MODULE_SETTING', parameter).then((result)=>{
+          if (result.code === 200) {
+            this.$message.success('修改成功')
+          }
         })
 
       }

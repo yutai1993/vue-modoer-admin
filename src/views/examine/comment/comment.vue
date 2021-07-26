@@ -59,6 +59,7 @@
       <el-button type="success">批量审核</el-button>
       <el-button type="danger">批量删除</el-button>
     </div>
+    <!--弹窗编辑-->
     <el-dialog title="编辑点评信息" :visible.sync="dialogTableVisible">
       <table class="table-body">
         <tbody>
@@ -67,7 +68,7 @@
             主题名称
           </td>
           <td class="moduleSetting-right">
-            <span class="topicNameURL" @click="open(editor.topicNameURL)">{{editor.topicName}}</span>
+            <span class="topicNameURL" @click="open(ReviewItem.topicNameURL)">{{ReviewItem.topicName}}</span>
           </td>
         </tr>
         <tr>
@@ -75,7 +76,7 @@
             点评会员
           </td>
           <td class="moduleSetting-right">
-            <span>{{editor.name}}</span>
+            <span>{{ReviewItem.name}}</span>
           </td>
         </tr>
         <tr>
@@ -83,7 +84,7 @@
             状态
           </td>
           <td class="moduleSetting-right">
-            <el-radio-group v-model="editor.status">
+            <el-radio-group v-model="ReviewItem.status">
               <el-radio :label="0">已审核</el-radio>
               <el-radio :label="1">未审核</el-radio>
             </el-radio-group>
@@ -94,7 +95,7 @@
             综合评价
           </td>
           <td class="moduleSetting-right">
-            <el-radio-group v-model="editor.comprehensive">
+            <el-radio-group v-model="ReviewItem.comprehensive">
               <el-radio :label="0">好</el-radio>
               <el-radio :label="1">一般</el-radio>
               <el-radio :label="2">不好</el-radio>
@@ -108,19 +109,19 @@
           <td class="moduleSetting-right">
             <div class="rate-box">环境：
               <el-rate
-                v-model="editor.rateData1"
+                v-model="ReviewItem.rateData1"
                 show-text>
               </el-rate>
             </div>
             <div class="rate-box">服务：
               <el-rate
-                v-model="editor.rateData2"
+                v-model="ReviewItem.rateData2"
                 show-text>
               </el-rate>
             </div>
             <div class="rate-box">性价比：
               <el-rate
-                v-model="editor.rateData3"
+                v-model="ReviewItem.rateData3"
                 show-text>
               </el-rate>
             </div>
@@ -135,7 +136,7 @@
               type="textarea"
               :rows="2"
               placeholder="请输入内容"
-              v-model="editor.address">
+              v-model="ReviewItem.address">
             </el-input>
           </td>
         </tr>
@@ -157,21 +158,8 @@
     name: 'comment',
     data() {
       return {
-        multipleSelection: [],
-        emptyText: true,
-        dialogTableVisible: false,
-        editor: {
-          id: null,
-          topicNameURL: null,
-          name: null,
-          topicName: null,
-          status: 0,
-          comprehensive: 1,
-          rateData1: 4,
-          rateData2: 3,
-          rateData3: 2,
-          address: ''
-        }
+        multipleSelection: [], // 选中的
+        dialogTableVisible: false, // 是否弹窗
       }
     },
 
@@ -180,21 +168,18 @@
     },
 
     computed: {
-      ...mapState('ReviewAudit', ['ReviewAuditList'])
+      ...mapState('ReviewAudit', ['ReviewAuditList', 'ReviewItem', 'emptyText'])
     },
 
     methods: {
 
       getListData() {
         if (this.ReviewAuditList.length === 0) {
-          this.$store.dispatch('ReviewAudit/getReview').then((res) => {
-            if (!res.data.length) {
-              this.emptyText = false
-            }
-          })
+          this.$store.dispatch('ReviewAudit/getReview')
         }
       },
 
+      // 编辑中的主题外联
       open(path) {
         if (isExternal(path)) {
           window.open(path)
@@ -208,31 +193,22 @@
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
+
       // 编辑
       handleEdit(index, row) {
-          this.editor.id = row.id
-          this.editor.topicNameURL = row.topicNameURL
-          this.editor.name = row.name
-          this.editor.topicName = row.topicName
-          this.editor.status = row.status
-          this.editor.comprehensive = row.comprehensive
-          this.editor.rateData1 = row.rateData1
-          this.editor.rateData2 = row.rateData2
-          this.editor.rateData3 = row.rateData3
-          this.editor.address = row.address
-
-        this.dialogTableVisible = true
+        this.$store.dispatch('ReviewAudit/getReviewItem', row.id).then(()=> {
+          this.dialogTableVisible = true
+        })
 
       },
 
       // 修改
       submit() {
         let data = {
-          editor:this.editor,
-          id: this.editor.id
+          ReviewItem:this.ReviewItem,
+          id: this.ReviewItem.id
         }
-        this.$store.dispatch('ReviewAudit/putReview', data).then(data => {
-          this.$store.dispatch('ReviewAudit/getReview')
+        this.$store.dispatch('ReviewAudit/putReview', data).then(()=> {
           this.dialogTableVisible = false
         })
       },
@@ -243,25 +219,13 @@
           id: row.id,
           status: 0
         }
-        this.$store.dispatch('ReviewAudit/postReview', data).then(data => {
-          this.$store.dispatch('ReviewAudit/getReview').then(res => {
-            if (!res.data.length) {
-              this.emptyText = false
-            }
-          })
-        })
+        this.$store.dispatch('ReviewAudit/postReview', data)
       },
 
 
       // 删除
       handleDelete(index, row) {
-        this.$store.dispatch('ReviewAudit/deleteReview', row.id).then(res => {
-          this.$store.dispatch('ReviewAudit/getReview').then(res => {
-            if (!res.data.length) {
-              this.emptyText = false
-            }
-          })
-        })
+        this.$store.dispatch('ReviewAudit/deleteReview', row.id)
       },
 
 

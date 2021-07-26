@@ -5,6 +5,11 @@ export const getReviewList  = function () {
   return axios.get('/api/ReviewAudit')
 }
 
+/* 获取单个 */
+export const getReviewItem  = function (id) {
+  return axios.get(`/api/editor?id=${id}`)
+}
+
 /* 修改状态 */
 export const postReviewList  = function (data) {
   return axios.post('/api/ReviewAudit',data)
