@@ -67,7 +67,6 @@ router.get('/api/userAttribute', (req, res) => {
 
 // 文章管理  获取文章
 router.get('/api/articleControl', (req, res) => {
-
   let body = req.query
   let pagenum = parseInt(body.pagenum) || 1 // 当前页码
   let pagesize = parseInt(body.pagesize) || 20 // 每页条数
