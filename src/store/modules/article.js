@@ -5,9 +5,10 @@ import {
   getuserAttribute,
   getarticleList,
   putArticleList,
-  deleteArticleList
-} from "../../api/article";
-import {deleteTopicList, putTopicList} from "../../api/topicPmp";
+  deleteArticleList,
+  getArticleItem
+} from "@/api/article";
+
 
 export default {
   namespaced: true,
@@ -16,13 +17,18 @@ export default {
     articleCategory2: [], // 二级分类
     articleCity: [], //  城市
     userAttribute: [], // 自定义属性
-    articleData: {}, // 主题数据对象带分页
+    articleData: {}, // 文章数据对象带分页
+    articleActive: {}, // 文章对象数据
   }),
 
   mutations: {
 
     ARTICLELIST(state, payload) {
       state.articleData = payload
+    },
+
+    ARTICLEITEM(state, payload) {
+      state.articleActive = payload
     },
 
     ARTICLECATEGORY1(state, payload) {
@@ -45,12 +51,20 @@ export default {
 
   actions: {
 
-    // 获取主题数据
+    // 获取文章数据数组
     async fetchArticleList({commit}, payload) {
       let result = await getarticleList(payload.pagesize, payload.pagenum)
       if (result.code === 200) {
-        console.log(result.data)
         commit('ARTICLELIST', result.data)
+      }
+    },
+
+    // 获取文章对象
+    async fetchArticleItem({commit}, payload) {
+      let result = await getArticleItem(payload.id)
+      if (result.code === 200) {
+        console.log(result.data)
+        commit('ARTICLEITEM', result.data.articleActive)
       }
     },
 

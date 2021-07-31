@@ -22,3 +22,6 @@ export const putArticleList = (data) => axios.put('/api/articleList', data)
 
 // 删除
 export const deleteArticleList = (data) => axios.delete('/api/articleList', {data})
+
+// 获取文章对象
+export const getArticleItem = (id) => axios.get(`/api/articleItem?id=${id}`)

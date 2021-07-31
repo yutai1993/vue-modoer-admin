@@ -132,14 +132,14 @@
         <tr>
           <td class="bg">文章简介:</td>
           <td>
-            <el-input size="mini" style="width: 300px" type="textarea" v-model="articleActive.intro" placeholder="请输入内容" />
+            <el-input size="mini" style="width: 300px"  v-model="articleActive.intro" placeholder="请输入内容" />
           </td>
         </tr>
         <tr>
           <td class="bg">文章内容:</td>
           <td>
             <div style="padding: 0 5px 0 0; width: 100%;">
-              <markdown ref="mar"/>
+              <markdown :editorOptions="editorOptions" :initialValue="articleActive.content" ref="mar"/>
             </div>
           </td>
         </tr>
@@ -166,25 +166,20 @@
         // 过滤后的二级分类
         filterCategory2: [],
 
-        // 选中的
-        articleActive:{
-          articleName: '',
-          categoryActive1: '',
-          categoryActive2: '',
-          cityActive: '',
-          status: 0,
-          evaluate: 0,
-          attributeActive: '', // 自定义属性
-          dialogImageUrl: '', //封面连接
-          topicName: '',
-          adminName: '',
-          source: '',
-          keyword: '',
-          date: '',
-          intro: '',
-          content: '',
-
+        editorOptions:{
+          height: '600px',  // 高度
+          initialEditType: 'wysiwyg', // 模式 markdown | wysiwyg
+          previewStyle: 'vertical', // 预览样式模式  tab | vertical
+          usageStatistics: false, // 禁止收集主机信息
+          language: 'zh-CN',
+          toolbarItems: [
+            ['heading', 'bold', 'italic', 'strike'],
+            ['hr', 'quote'],
+            ['ul', 'ol', 'task', 'indent', 'outdent'],
+            ['table', 'image', 'link'],
+            ['code', 'codeblock']]
         },
+        // initialValue: ''
       }
     },
 
@@ -196,17 +191,17 @@
           this.filterCategory2 = this.articleCategory2.filter(value => value.uid ===v)
           this.categoryActive2 = ''
         }
-      }
+      },
+
     },
 
     computed:{
 
-      ...mapState('article', ['articleCategory1', 'articleCategory2', 'articleCity', 'userAttribute'])
+      ...mapState('article', ['articleCategory1', 'articleCategory2', 'articleCity', 'userAttribute', 'articleActive'])
 
     },
 
     mounted(){
-      // $route.params.id
       this.init()
     },
 
@@ -222,6 +217,10 @@
         this.$store.dispatch('article/fetchArticleCity')
         // 获取自定义属性
         this.$store.dispatch('article/fetchuserAttribute')
+        // 获取文章对象数据
+        this.$store.dispatch('article/fetchArticleItem', {
+          id: this.$route.params.id
+        })
       },
 
       // 提交

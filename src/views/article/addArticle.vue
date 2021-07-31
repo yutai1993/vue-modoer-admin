@@ -132,7 +132,7 @@
         <tr>
           <td class="bg">文章简介:</td>
           <td>
-            <el-input size="mini" style="width: 300px" type="textarea" v-model="articleActive.intro" placeholder="请输入内容" />
+            <el-input size="mini" style="width: 300px"  v-model="articleActive.intro" placeholder="请输入内容" />
           </td>
         </tr>
         <tr>

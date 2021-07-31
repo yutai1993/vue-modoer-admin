@@ -178,4 +178,28 @@ router.delete('/api/articleList', (req, res) => {
 
 })
 
+router.get('/api/articleItem', (req, res) => {
+  const body = req.query
+  const id = body.id
+  let { articleList } = articleData
+  let item = articleList.find(value => value.id === id)
+  if (item){
+    return res.status(200).json({
+      code: 200,
+      msg: 'ok',
+      data:{
+        articleActive:item
+      }
+    })
+  }else {
+    return res.status(200).json({
+      code: 1,
+      msg: '不存在',
+      data:{
+        articleActive: {}
+      }
+    })
+  }
+})
+
 module.exports = router

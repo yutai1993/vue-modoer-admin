@@ -18,7 +18,7 @@
     <div class="modoer-container" :style="[{'paddingLeft': paddingLeft + 'px'}]">
       <div class="page-content">
         <transition name="manAnimation" mode="out-in">
-          <keep-alive :include="excludeKeepName">
+          <keep-alive :include="excludeKeepName" >
             <router-view />
           </keep-alive>
         </transition>
