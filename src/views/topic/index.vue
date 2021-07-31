@@ -6,13 +6,13 @@
   </transition>
 </template>
 <script>
-  import { mapState } from 'vuex'
-  export default {
-    name: "topic",
-    computed: {
-      ...mapState('tagsView', ['excludeKeepName'])
-    }
+import { mapState } from 'vuex'
+export default {
+  name: 'topic',
+  computed: {
+    ...mapState('tagsView', ['excludeKeepName'])
   }
+}
 </script>
 <style scoped>
 

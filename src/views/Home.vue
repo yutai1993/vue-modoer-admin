@@ -34,7 +34,7 @@
 
 export default {
   name: 'Home',
-  components: {  },
+  components: { },
   data () {
     return {
       Echarts: [

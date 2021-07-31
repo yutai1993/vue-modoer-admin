@@ -31,7 +31,6 @@ export default {
           /* 保存在本地 */
           setStorageItem('userRouters', userRouters)
         }
-
       }
       /* 从本地获取 */
       const data = getStorageItem('userRouters')

@@ -195,7 +195,6 @@
           </td>
         </tr>
 
-
         </tbody>
       </table>
     </div>
@@ -220,119 +219,116 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
-  import BMap from "../../../../components/BaiduMap/BMap";
+import { mapState } from 'vuex'
+import BMap from '../../../../components/BaiduMap/BMap'
 
-  export default {
-    name: "addtopic",
-    components: {BMap},
-    data() {
-      return {
-        dialogVisible: false, // 上传
-        disabled: false, // 上传
-        topicCategory2Middle: [], //  和一级分类关联的二级分类
-        mapKey: '',
-        // 主题字段
-        topicOptions: {
-          c_topicCategory: '',
-          c_dataSuatus: '',
-          c_cover: '', // 封面链接
-          c_grade: '',
-          c_topicStyle: '',
-          c_topicAdmin: '', // 管理员
-          c_category: '',
-          c_topicName: '', // 名称
-          c_subclass: '',
-          c_map: '', // 地图坐标
-          c_regional: '',
-          c_city: '',
-          c_synopsis: '',
-          c_site: '',
-          c_business: '',
-          c_contact: '',
-          c_letter: ' tinymce编辑器',  // 富文本
-        },
+export default {
+  name: 'addtopic',
+  components: { BMap },
+  data () {
+    return {
+      dialogVisible: false, // 上传
+      disabled: false, // 上传
+      topicCategory2Middle: [], //  和一级分类关联的二级分类
+      mapKey: '',
+      // 主题字段
+      topicOptions: {
+        c_topicCategory: '',
+        c_dataSuatus: '',
+        c_cover: '', // 封面链接
+        c_grade: '',
+        c_topicStyle: '',
+        c_topicAdmin: '', // 管理员
+        c_category: '',
+        c_topicName: '', // 名称
+        c_subclass: '',
+        c_map: '', // 地图坐标
+        c_regional: '',
+        c_city: '',
+        c_synopsis: '',
+        c_site: '',
+        c_business: '',
+        c_contact: '',
+        c_letter: ' tinymce编辑器' // 富文本
+      },
 
-        dialogFormVisible: false, // 弹窗
+      dialogFormVisible: false // 弹窗
 
+    }
+  },
+  mounted () {
+    this.initTopic()
+  },
+
+  computed: {
+    ...mapState('addTopic', ['topicCategory1', 'topicCategory2', 'Grade', 'TopicStyle'])
+
+  },
+
+  methods: {
+
+    initTopic () {
+      // 获取分类
+      this.$store.dispatch('addTopic/fetchTopicCategory')
+      // 获取主题等级
+      this.$store.dispatch('addTopic/fetchTopicGrade')
+      // 获取主题等级
+      this.$store.dispatch('addTopic/fetchTopicStyle')
+    },
+
+    // 主题分类改变 过滤出二级分类
+    topicCategoryChangeHandle (value) {
+      const v = this.topicCategory1.find(value1 => value1.id === value)
+      if (v.topicCategory2Id) {
+        this.topicCategory2Middle = this.topicCategory2.filter((value1, index) => value1.uid === v.topicCategory2Id)
       }
     },
-    mounted() {
-      this.initTopic()
+
+    //  以下为上传 事件
+    handleRemove (file) {
+      console.log(file)
+    },
+    handlePictureCardPreview (file) {
+      this.topicOptions.c_cover = file.url
+      this.dialogVisible = true
+    },
+    handleDownload (file) {
+      console.log(file)
     },
 
-    computed: {
-      ...mapState('addTopic', ['topicCategory1', 'topicCategory2', 'Grade', 'TopicStyle']),
-
+    /* 弹窗 */
+    dialogFormVisibleHandle () {
+      this.dialogFormVisible = true
     },
 
-    methods: {
-
-      initTopic(){
-        // 获取分类
-        this.$store.dispatch('addTopic/fetchTopicCategory')
-        // 获取主题等级
-        this.$store.dispatch('addTopic/fetchTopicGrade')
-        // 获取主题等级
-        this.$store.dispatch('addTopic/fetchTopicStyle')
-      },
-
-      // 主题分类改变 过滤出二级分类
-      topicCategoryChangeHandle(value){
-        let v = this.topicCategory1.find(value1 => value1.id === value)
-        if(v.topicCategory2Id){
-          this.topicCategory2Middle = this.topicCategory2.filter((value1, index) => value1.uid === v.topicCategory2Id)
-
-        }
-      },
-
-      //  以下为上传 事件
-      handleRemove(file) {
-        console.log(file);
-      },
-      handlePictureCardPreview(file) {
-        this.topicOptions.c_cover = file.url;
-        this.dialogVisible = true;
-      },
-      handleDownload(file) {
-        console.log(file);
-      },
-
-      /* 弹窗 */
-      dialogFormVisibleHandle(){
-        this.dialogFormVisible = true
-
-      },
-
-      // 获取标记坐标
-      getMapMarkerPositionHandle(){
-        let point = this.$refs['BMap'].getMapMarkerPosition()
-        this.topicOptions.c_map = point.lng.toFixed(5).toString().concat(',', point.lat.toFixed(5).toString())
-        this.dialogFormVisible = false
-      },
-
-      // 创建地图标记
-      addMapMarkerHandle(){
-        // 清空所有标记
-        this.$refs['BMap'].mapMarkerClear()
-        // 创建标记
-        this.$refs['BMap'].addMapMarker(this.$refs['BMap'].getMapCenter())
-      },
-
-      //关键字检索
-      mapSearchSubmit(e){
-        let { mapKey } = this;
-        if (!mapKey) return;
-        this.$refs['BMap'].mapLocalSearch(mapKey)
-      }
-
+    // 获取标记坐标
+    getMapMarkerPositionHandle () {
+      const point = this.$refs.BMap.getMapMarkerPosition()
+      this.topicOptions.c_map = point.lng.toFixed(5).toString().concat(',', point.lat.toFixed(5).toString())
+      this.dialogFormVisible = false
     },
-    filters: {}
-  }
+
+    // 创建地图标记
+    addMapMarkerHandle () {
+      // 清空所有标记
+      this.$refs.BMap.mapMarkerClear()
+      // 创建标记
+      this.$refs.BMap.addMapMarker(this.$refs.BMap.getMapCenter())
+    },
+
+    // 关键字检索
+    mapSearchSubmit (e) {
+      const { mapKey } = this
+      if (!mapKey) return
+      this.$refs.BMap.mapLocalSearch(mapKey)
+    }
+
+  },
+  filters: {}
+}
 </script>
 
 <style lang="scss">
-
 
   .addtopic {
     /* 页头 */
@@ -369,7 +365,6 @@
       text-align: center;
       margin: 10px 0;
     }
-
 
   }
 </style>

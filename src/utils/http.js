@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {Message, Loading} from 'element-ui'
+import { Message, Loading } from 'element-ui'
 import store from '../store/index'
 import router from '../router'
 
@@ -23,7 +23,6 @@ let count = 0 // 请求计数器
 // axios.defaults.timeout = 5000
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
-
   config.timeout = 5000 // 请求超时
 
   /* 请求加1 */
@@ -45,7 +44,7 @@ axios.interceptors.request.use(function (config) {
   }
 
   /* 取消 */
-  config.cancelToken = new CancelToken(function executor(c) {
+  config.cancelToken = new CancelToken(function executor (c) {
     // executor 函数接收一个 cancel 函数作为参数
     cancel = c /* c 就是取消函数 在需要取消的地方调用 */
   })
@@ -76,13 +75,12 @@ axios.interceptors.response.use(function (response) {
   }
 
   const { code, msg } = response.data
-  if ( code !== 200) {
+  if (code !== 200) {
     Message.error({
       message: msg
     })
   }
   return response.data
-
 }, function (error) {
   if (error && error.response) {
     switch (error.response.status) {

@@ -144,8 +144,6 @@
           </td>
         </tr>
 
-
-
         </tbody>
       </table>
     </div>
@@ -157,105 +155,104 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-  export default {
-    name: "addArticle",
-    data(){
-      return {
-        // 过滤后的二级分类
-        filterCategory2: [],
+import { mapState } from 'vuex'
+export default {
+  name: 'addArticle',
+  data () {
+    return {
+      // 过滤后的二级分类
+      filterCategory2: [],
 
-        // 选中的
-        articleActive:{
-          articleName: '',
-          categoryActive1: '',
-          categoryActive2: '',
-          cityActive: '',
-          status: 0,
-          evaluate: 0,
-          attributeActive: '', // 自定义属性
-          dialogImageUrl: '', //封面连接
-          topicName: '',
-          adminName: '',
-          source: '',
-          keyword: '',
-          date: '',
-          intro: '',
-          content: '',
-
-        },
+      // 选中的
+      articleActive: {
+        articleName: '',
+        categoryActive1: '',
+        categoryActive2: '',
+        cityActive: '',
+        status: 0,
+        evaluate: 0,
+        attributeActive: '', // 自定义属性
+        dialogImageUrl: '', // 封面连接
+        topicName: '',
+        adminName: '',
+        source: '',
+        keyword: '',
+        date: '',
+        intro: '',
+        content: ''
 
       }
-    },
-
-    watch:{
-
-      // 过滤出 二级分类所需数据
-      'articleActive.categoryActive1': {
-        handler(v){
-          this.filterCategory2 = this.articleCategory2.filter(value => value.uid ===v)
-          this.categoryActive2 = ''
-        }
-      }
-    },
-
-    computed:{
-
-      ...mapState('article', ['articleCategory1', 'articleCategory2', 'articleCity', 'userAttribute'])
-
-    },
-
-    mounted(){
-      this.init()
-    },
-
-    methods: {
-
-      // 获取数据
-      init() {
-        // 获取一级分类
-        this.$store.dispatch('article/fetchArticleCategory1')
-        // 获取二级分类
-        this.$store.dispatch('article/fetchArticleCategory2')
-        // 获取城市
-        this.$store.dispatch('article/fetchArticleCity')
-        // 获取自定义属性
-        this.$store.dispatch('article/fetchuserAttribute')
-      },
-
-      // 提交
-      submitHandle(){
-        let markdownHtml = this.$refs['mar'].getHtml()
-        let markdownText = this.$refs['mar'].getMarkdown()
-        console.log(markdownHtml)
-        console.log(markdownText)
-      },
-
-      //  以下为上传 事件
-      handleAvatarSuccess(res, file) {
-        this.articleActive.dialogImageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
-      }
-
-
-    },
-
-    filters: {
 
     }
+  },
+
+  watch: {
+
+    // 过滤出 二级分类所需数据
+    'articleActive.categoryActive1': {
+      handler (v) {
+        this.filterCategory2 = this.articleCategory2.filter(value => value.uid === v)
+        this.categoryActive2 = ''
+      }
+    }
+  },
+
+  computed: {
+
+    ...mapState('article', ['articleCategory1', 'articleCategory2', 'articleCity', 'userAttribute'])
+
+  },
+
+  mounted () {
+    this.init()
+  },
+
+  methods: {
+
+    // 获取数据
+    init () {
+      // 获取一级分类
+      this.$store.dispatch('article/fetchArticleCategory1')
+      // 获取二级分类
+      this.$store.dispatch('article/fetchArticleCategory2')
+      // 获取城市
+      this.$store.dispatch('article/fetchArticleCity')
+      // 获取自定义属性
+      this.$store.dispatch('article/fetchuserAttribute')
+    },
+
+    // 提交
+    submitHandle () {
+      const markdownHtml = this.$refs.mar.getHtml()
+      const markdownText = this.$refs.mar.getMarkdown()
+      console.log(markdownHtml)
+      console.log(markdownText)
+    },
+
+    //  以下为上传 事件
+    handleAvatarSuccess (res, file) {
+      this.articleActive.dialogImageUrl = URL.createObjectURL(file.raw)
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    }
+
+  },
+
+  filters: {
 
   }
+
+}
 </script>
 
 <style lang="scss">

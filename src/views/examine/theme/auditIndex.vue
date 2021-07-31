@@ -15,29 +15,29 @@
 </template>
 
 <script>
-  import themeAudit from "./themeAudit";
-  import imgAudit from "./imgAudit";
-  import msgAudit from "./msgAudit";
-  export default {
-    name: "auditIndex",
-    components:{themeAudit, imgAudit, msgAudit},
-    data(){
-      return {
-        AssemblyArray: ['themeAudit', 'imgAudit', 'msgAudit'],
-        AssemblyName: '',
-      }
-    },
-    watch: {
-      $route:{
-        handler(newV, oldV) {
-          if (this.AssemblyArray.includes(newV.name)) {
-            this.AssemblyName = newV.name
-          }
-        },
-        immediate: true
-      }
+import themeAudit from './themeAudit'
+import imgAudit from './imgAudit'
+import msgAudit from './msgAudit'
+export default {
+  name: 'auditIndex',
+  components: { themeAudit, imgAudit, msgAudit },
+  data () {
+    return {
+      AssemblyArray: ['themeAudit', 'imgAudit', 'msgAudit'],
+      AssemblyName: ''
+    }
+  },
+  watch: {
+    $route: {
+      handler (newV, oldV) {
+        if (this.AssemblyArray.includes(newV.name)) {
+          this.AssemblyName = newV.name
+        }
+      },
+      immediate: true
     }
   }
+}
 </script>
 
 <style lang="scss">
@@ -84,7 +84,5 @@
       padding-bottom: 3px;
     }
   }
-
-
 
 </style>

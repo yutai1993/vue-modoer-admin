@@ -50,7 +50,7 @@
 
 import { mapState } from 'vuex'
 import ChildrenMenu from './childrenMenu'
-import {mixinIsHidden} from '@/mixin/isHidden'
+import { mixinIsHidden } from '@/mixin/isHidden'
 import variables from '@/assets/css/var.scss'
 import { breadcrumbName, isExternal } from '../../utils/utils'
 
@@ -65,7 +65,7 @@ export default {
     }
 
   },
-  mixins:[mixinIsHidden],
+  mixins: [mixinIsHidden],
   mounted () {
     this.breadcrumb(this.$route.path)
     this.$store.commit('Layout/setActivePath', this.$route.name)
@@ -79,7 +79,6 @@ export default {
     /*  */
     ...mapState('Layout', ['isCollapse', 'activePath']),
 
-
     variables () {
       return variables
     }
@@ -89,16 +88,15 @@ export default {
 
     /* 侧边栏路由跳转 name 的方式 */
     handleSelect (name) {
-      if (!isExternal(name)){
+      if (!isExternal(name)) {
         this.$router.push({ name })
         this.breadcrumb(this.$route.path)
         if (this.$parent.Mask) {
           this.$parent.hiddenIsMask()
         }
-      }else {
+      } else {
         window.open(name)
       }
-
     },
 
     /* 面包屑 */
@@ -111,10 +109,10 @@ export default {
   },
 
   filters: {
-    filterExternal(v){
-      if (isExternal(v.path)){
+    filterExternal (v) {
+      if (isExternal(v.path)) {
         return v.path
-      }else {
+      } else {
         return v.name
       }
     }

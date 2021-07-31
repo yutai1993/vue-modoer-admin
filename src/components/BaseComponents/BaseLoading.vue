@@ -5,9 +5,9 @@
 </template>
 
 <script>
-  export default {
-    name: "BaseLoading",
-  }
+export default {
+  name: 'BaseLoading'
+}
 </script>
 
 <style lang="scss" scoped>

@@ -34,15 +34,15 @@ export default {
       const faltering = state.tags.some(item => item.name === currentRoute.name)
       if (!faltering) {
         this.commit('tagsView/ADDEXCLUDEKEEPNAME', currentRoute.name)
-        let tagObj = {
+        const tagObj = {
           name: currentRoute.name,
           title: currentRoute.meta.title,
           fullPath: currentRoute.fullPath
         }
         // 有参数的情况
-        let attribute = Object.keys(currentRoute.params)
-        if(attribute.length){
-          tagObj.title = currentRoute.meta.title+ '-' + currentRoute.params.id
+        const attribute = Object.keys(currentRoute.params)
+        if (attribute.length) {
+          tagObj.title = currentRoute.meta.title + '-' + currentRoute.params.id
           tagObj.params = {}
           Object.assign(tagObj.params, currentRoute.params)
         }
@@ -50,10 +50,10 @@ export default {
         this.commit('tagsView/TOGGLEVIEW', currentRoute.name)
       } else {
         // 有参数的情况
-        let attribute = Object.keys(currentRoute.params)
-        if(attribute.length){
-          let Obj = state.tags.find(item => item.name === currentRoute.name)
-          Obj.title = currentRoute.meta.title+ '-' + currentRoute.params.id
+        const attribute = Object.keys(currentRoute.params)
+        if (attribute.length) {
+          const Obj = state.tags.find(item => item.name === currentRoute.name)
+          Obj.title = currentRoute.meta.title + '-' + currentRoute.params.id
           Obj.fullPath = currentRoute.fullPath
           router.push({
             path: currentRoute.fullPath

@@ -77,7 +77,7 @@ export default {
         this.gsapTo(flag)
       }
     },
-    breadcrumb(){
+    breadcrumb () {
       const w = this.getBodyWidth()
       this.setBreadcrumbFlag(w)
     }
@@ -156,11 +156,11 @@ export default {
     },
 
     /* 面包屑显示隐藏 */
-    setBreadcrumbFlag(w){
+    setBreadcrumbFlag (w) {
       if (w <= 750 && this.breadcrumb.length >= 3) {
-        this.$store.commit("Layout/SETBREADCRUMBFLAG", false)
-      }else {
-        this.$store.commit("Layout/SETBREADCRUMBFLAG", true)
+        this.$store.commit('Layout/SETBREADCRUMBFLAG', false)
+      } else {
+        this.$store.commit('Layout/SETBREADCRUMBFLAG', true)
       }
     },
 

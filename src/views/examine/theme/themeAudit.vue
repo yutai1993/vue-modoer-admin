@@ -53,44 +53,44 @@
 <script>
 export default {
   name: 'themeAudit',
-  data(){
+  data () {
     return {
-      themeAuditData:[
+      themeAuditData: [
         {
           topicName: '主题名称',
           date: '2019-2-10',
           category: '分类名称',
-          userName: '登记会员',
+          userName: '登记会员'
         },
         {
           topicName: '主题名称',
           date: '2019-2-10',
           category: '分类名称',
-          userName: '登记会员',
+          userName: '登记会员'
         },
         {
           topicName: '主题名称',
           date: '2019-2-10',
           category: '分类名称',
-          userName: '登记会员',
-        },
+          userName: '登记会员'
+        }
       ],
       multipleSelection: [],
-      emptyText: true,
+      emptyText: true
     }
   },
   mounted () {
 
   },
 
-  methods:{
+  methods: {
     // 选中的
-    handleSelectionChange(val){
+    handleSelectionChange (val) {
       this.multipleSelection = val
     },
 
     // 编辑
-    handleEdit(index, row) {
+    handleEdit (index, row) {
       console.log(index, row)
     }
   }

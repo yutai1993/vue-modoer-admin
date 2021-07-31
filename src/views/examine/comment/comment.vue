@@ -151,86 +151,82 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
-  import {isExternal} from '@/utils/utils'
+import { mapState } from 'vuex'
+import { isExternal } from '@/utils/utils'
 
-  export default {
-    name: 'comment',
-    data() {
-      return {
-        multipleSelection: [], // 选中的
-        dialogTableVisible: false, // 是否弹窗
+export default {
+  name: 'comment',
+  data () {
+    return {
+      multipleSelection: [], // 选中的
+      dialogTableVisible: false // 是否弹窗
+    }
+  },
+
+  mounted () {
+    this.getListData()
+  },
+
+  computed: {
+    ...mapState('ReviewAudit', ['ReviewAuditList', 'ReviewItem', 'emptyText'])
+  },
+
+  methods: {
+
+    getListData () {
+      if (this.ReviewAuditList.length === 0) {
+        this.$store.dispatch('ReviewAudit/getReview')
       }
     },
 
-    mounted() {
-      this.getListData()
+    // 编辑中的主题外联
+    open (path) {
+      if (isExternal(path)) {
+        window.open(path)
+      } else {
+        this.$router.push({ path })
+      }
     },
 
-    computed: {
-      ...mapState('ReviewAudit', ['ReviewAuditList', 'ReviewItem', 'emptyText'])
+    // 选中的
+    handleSelectionChange (val) {
+      this.multipleSelection = val
     },
 
-    methods: {
+    // 编辑
+    handleEdit (index, row) {
+      this.$store.dispatch('ReviewAudit/getReviewItem', row.id).then(() => {
+        this.dialogTableVisible = true
+      })
+    },
 
-      getListData() {
-        if (this.ReviewAuditList.length === 0) {
-          this.$store.dispatch('ReviewAudit/getReview')
-        }
-      },
+    // 修改
+    submit () {
+      const data = {
+        ReviewItem: this.ReviewItem,
+        id: this.ReviewItem.id
+      }
+      this.$store.dispatch('ReviewAudit/putReview', data).then(() => {
+        this.dialogTableVisible = false
+      })
+    },
 
-      // 编辑中的主题外联
-      open(path) {
-        if (isExternal(path)) {
-          window.open(path)
-        } else {
-          this.$router.push({path})
-        }
+    // 审核
+    handleSuccess (index, row) {
+      const data = {
+        id: row.id,
+        status: 0
+      }
+      this.$store.dispatch('ReviewAudit/postReview', data)
+    },
 
-      },
-
-      // 选中的
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
-
-      // 编辑
-      handleEdit(index, row) {
-        this.$store.dispatch('ReviewAudit/getReviewItem', row.id).then(()=> {
-          this.dialogTableVisible = true
-        })
-
-      },
-
-      // 修改
-      submit() {
-        let data = {
-          ReviewItem:this.ReviewItem,
-          id: this.ReviewItem.id
-        }
-        this.$store.dispatch('ReviewAudit/putReview', data).then(()=> {
-          this.dialogTableVisible = false
-        })
-      },
-
-      // 审核
-      handleSuccess(index, row) {
-        let data = {
-          id: row.id,
-          status: 0
-        }
-        this.$store.dispatch('ReviewAudit/postReview', data)
-      },
-
-
-      // 删除
-      handleDelete(index, row) {
-        this.$store.dispatch('ReviewAudit/deleteReview', row.id)
-      },
-
-
+    // 删除
+    handleDelete (index, row) {
+      this.$store.dispatch('ReviewAudit/deleteReview', row.id)
     }
+
   }
+}
 </script>
 
 <style lang="scss">
@@ -273,11 +269,9 @@
         vertical-align: middle;
       }
 
-
       .el-textarea textarea {
         height: 150px;
       }
-
 
       td {
         border-bottom: 1px solid #ebeef5;

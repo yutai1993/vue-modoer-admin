@@ -99,10 +99,10 @@ export default {
     /* 切换 */
     toggleHandle (tag) {
       this.$store.commit('tagsView/TOGGLEVIEW', tag.name)
-      if (tag.params){
+      if (tag.params) {
         this.$router.push({ path: tag.fullPath })
-      }else {
-        this.$router.push({ name:tag.name })
+      } else {
+        this.$router.push({ name: tag.name })
       }
     },
     /* 删除 */

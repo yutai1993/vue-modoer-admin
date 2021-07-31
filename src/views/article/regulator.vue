@@ -239,255 +239,250 @@
 </template>
 
 <script>
-  import { mapState } from  'vuex'
-  export default {
-    name: "regulator",
-    data() {
-      return {
+import { mapState } from 'vuex'
+export default {
+  name: 'regulator',
+  data () {
+    return {
 
-        filterCategory2: [], // 过滤后的分类2
+      filterCategory2: [], // 过滤后的分类2
 
-        category1Active: '', // 主题分类1选中的
-        category2Active: '', // 主题分类2选中的
-        userAttributeActive: '', // 自定义属性
-        regionActive: '', // 选中的所属地区
-        datePicker: '', // 时间选择
-        keywordActive: '', // 输入的关键字
-        reviewID: '', // 输入的点评对象ID
-        creator: '', // 主题创建者
-        topicAdmin: '', // 主题管理员
-        sortingActive: 1, // 选中的排序方式
-        orderActive: 1, // 升序 | 降序
+      category1Active: '', // 主题分类1选中的
+      category2Active: '', // 主题分类2选中的
+      userAttributeActive: '', // 自定义属性
+      regionActive: '', // 选中的所属地区
+      datePicker: '', // 时间选择
+      keywordActive: '', // 输入的关键字
+      reviewID: '', // 输入的点评对象ID
+      creator: '', // 主题创建者
+      topicAdmin: '', // 主题管理员
+      sortingActive: 1, // 选中的排序方式
+      orderActive: 1, // 升序 | 降序
 
-        multipleSelection: [], // 选中的文章对象数组
+      multipleSelection: [], // 选中的文章对象数组
 
-        // 主题搜索过滤
-        filter:{
-          category: [
-            {
-              value: '选项1',
-              label: '黄金糕'
-            }, {
-              value: '选项2',
-              label: '双皮奶'
-            }, {
-              value: '选项3',
-              label: '蚵仔煎'
-            }, {
-              value: '选项4',
-              label: '龙须面'
-            }, {
-              value: '选项5',
-              label: '北京烤鸭'
-            }
-          ], // 主题分类
-          region: [
-            {
-              value: '选项1',
-              label: '黄金糕'
-            }, {
-              value: '选项2',
-              label: '双皮奶'
-            }, {
-              value: '选项3',
-              label: '蚵仔煎'
-            }, {
-              value: '选项4',
-              label: '龙须面'
-            }, {
-              value: '选项5',
-              label: '北京烤鸭'
-            }
-          ], // 所属地区
-          sorting: [
-            {
-              value: 1,
-              label: '默认排序'
-            },{
-              value: 2,
-              label: '登记时间'
-            },{
-              value: 3,
-              label: '推荐度'
-            },
-          ], // 排序方式
-          order: [
-            {
-              value: 1,
-              label: '递减'
-            },{
-              value: 2,
-              label: '递增'
-            }
-          ], // 升序降序
-          offset:  [
-            {
-              value: 10,
-              label: '10条'
-            },{
-              value: 20,
-              label: '20条'
-            }
-          ], // 每页条数
+      // 主题搜索过滤
+      filter: {
+        category: [
+          {
+            value: '选项1',
+            label: '黄金糕'
+          }, {
+            value: '选项2',
+            label: '双皮奶'
+          }, {
+            value: '选项3',
+            label: '蚵仔煎'
+          }, {
+            value: '选项4',
+            label: '龙须面'
+          }, {
+            value: '选项5',
+            label: '北京烤鸭'
+          }
+        ], // 主题分类
+        region: [
+          {
+            value: '选项1',
+            label: '黄金糕'
+          }, {
+            value: '选项2',
+            label: '双皮奶'
+          }, {
+            value: '选项3',
+            label: '蚵仔煎'
+          }, {
+            value: '选项4',
+            label: '龙须面'
+          }, {
+            value: '选项5',
+            label: '北京烤鸭'
+          }
+        ], // 所属地区
+        sorting: [
+          {
+            value: 1,
+            label: '默认排序'
+          }, {
+            value: 2,
+            label: '登记时间'
+          }, {
+            value: 3,
+            label: '推荐度'
+          }
+        ], // 排序方式
+        order: [
+          {
+            value: 1,
+            label: '递减'
+          }, {
+            value: 2,
+            label: '递增'
+          }
+        ], // 升序降序
+        offset: [
+          {
+            value: 10,
+            label: '10条'
+          }, {
+            value: 20,
+            label: '20条'
+          }
+        ] // 每页条数
+      },
+
+      pagesize: 20, // 选中的每页条数
+      pagenum: 1 // 当前页
+
+    }
+  },
+
+  watch: {
+
+    // 过滤出 二级分类所需数据
+    category1Active: {
+      handler (v) {
+        this.filterCategory2 = this.articleCategory2.filter(value => value.uid === v)
+        this.category2Active = ''
+      }
+    },
+
+    'articleData.pagenum' (v) {
+      this.pagenum = v
+    },
+    'articleData.pagesize' (v) {
+      this.pagesize = v
+    }
+
+  },
+
+  computed: {
+    ...mapState('tagsView', ['tags']),
+    ...mapState('article', ['articleData', 'articleCategory1', 'articleCategory2', 'userAttribute', 'articleCity'])
+  },
+
+  mounted () {
+    this.init()
+  },
+
+  methods: {
+
+    init () {
+      // 获取主题数据
+      this.$store.dispatch('article/fetchArticleList', {
+        pagesize: this.pagesize,
+        pagenum: this.pagenum
+      })
+      // 获取自定义属性
+      this.$store.dispatch('article/fetchuserAttribute')
+      // 获取 一级分类
+      this.$store.dispatch('article/fetchArticleCategory1')
+      // 获取二级分类
+      this.$store.dispatch('article/fetchArticleCategory2')
+      // 获取城市
+      this.$store.dispatch('article/fetchArticleCity')
+    },
+
+    // 当前页改变时触发
+    currentChangeHandle () {
+      this.$store.dispatch('article/fetchArticleList', {
+        pagesize: this.pagesize,
+        pagenum: this.pagenum
+      })
+    },
+
+    // 修改 推荐度 浏览量
+    changeHandle () {
+      // 获取 每条数据的 id 推荐度 浏览量
+      const { articleList } = this.articleData
+      const arr = []
+      for (let i = 0; i < articleList.length; i++) {
+        const r = {}
+        r.id = articleList[i].id
+        r.sort = articleList[i].sort
+        arr.push(r)
+      }
+      const params = {
+        data: {
+          arr
         },
-
-        pagesize: 20, // 选中的每页条数
-        pagenum: 1, // 当前页
-
+        pagenum: this.pagenum,
+        pagesize: this.pagesize
       }
+      this.$store.dispatch('article/putArticleList', params)
     },
 
-    watch:{
-
-      // 过滤出 二级分类所需数据
-      category1Active: {
-        handler(v){
-          this.filterCategory2 = this.articleCategory2.filter(value => value.uid ===v)
-          this.category2Active = ''
-        }
-      },
-
-      'articleData.pagenum'(v) {
-        this.pagenum = v
-      },
-      'articleData.pagesize'(v) {
-        this.pagesize = v
-      },
-
-    },
-
-    computed: {
-      ...mapState('tagsView', ['tags']),
-      ...mapState('article', ['articleData', 'articleCategory1', 'articleCategory2', 'userAttribute', 'articleCity'])
-    },
-
-    mounted(){
-
-      this.init()
-
-    },
-
-    methods: {
-
-      init(){
-        //获取主题数据
-        this.$store.dispatch('article/fetchArticleList', {
-          pagesize: this.pagesize,
-          pagenum: this.pagenum
-        })
-        //获取自定义属性
-        this.$store.dispatch('article/fetchuserAttribute')
-        // 获取 一级分类
-        this.$store.dispatch('article/fetchArticleCategory1')
-        // 获取二级分类
-        this.$store.dispatch('article/fetchArticleCategory2')
-        // 获取城市
-        this.$store.dispatch('article/fetchArticleCity')
-      },
-
-      // 当前页改变时触发
-      currentChangeHandle() {
-        this.$store.dispatch('article/fetchArticleList', {
-          pagesize: this.pagesize,
-          pagenum: this.pagenum
-        })
-      },
-
-
-      // 修改 推荐度 浏览量
-      changeHandle(){
-        // 获取 每条数据的 id 推荐度 浏览量
-        let { articleList } = this.articleData
-        let arr = []
-        for (let i = 0; i < articleList.length ; i++) {
-          let r = {}
-          r.id = articleList[i].id
-          r.sort = articleList[i].sort
-          arr.push(r)
-        }
-        let params = {
-          data: {
-            arr
-          },
-          pagenum: this.pagenum,
-          pagesize: this.pagesize
-        }
-        this.$store.dispatch('article/putArticleList', params)
-      },
-
-      // 删除选中的
-      deleteHandle(){
-        let s = this.multipleSelection
-        if(s.length <= 0){
-          return
-        }
-        let arr = []
-        for (let i = 0; i < s.length ; i++) {
-          arr.push(s[i].id)
-        }
-
-        let params = {
-          data: {
-            arr
-          },
-          pagenum: this.pagenum,
-          pagesize: this.pagesize
-        }
-        this.$store.dispatch('article/deleteArticleList', params)
-      },
-
-      // 用户点击上一页按钮改变当前页后触发
-      prevClickHandle() {
-        console.log('用户点击上一页按钮')
-      },
-
-      // 用户点击下一页按钮改变当前页后触发
-      nextClickHandle() {
-        console.log('用户点击下一页按钮')
-      },
-
-      // 选中的
-      handleSelectionChange(val){
-        this.multipleSelection = val
-      },
-
-      // 查看
-      handleClick(row) {
-        console.log('查看ID',row.id);
-      },
-      // 编辑
-      editorHandle(row) {
-        console.log('编辑ID',row.id)
-        let articleeditorIndex = this.tags.findIndex(value => value.name === 'articleeditor')
-        let articleeditor = this.tags.find(value => value.name === 'articleeditor')
-        /* 替换 tags 中 tag数据*/
-        if(articleeditor && Object.keys(articleeditor.params).length){
-          articleeditor.params.id = row.id
-          this.tags.splice(articleeditorIndex, 1, articleeditor)
-        }
-        this.$router.push(`/articles/articleeditor/${row.id}`);
+    // 删除选中的
+    deleteHandle () {
+      const s = this.multipleSelection
+      if (s.length <= 0) {
+        return
       }
+      const arr = []
+      for (let i = 0; i < s.length; i++) {
+        arr.push(s[i].id)
+      }
+
+      const params = {
+        data: {
+          arr
+        },
+        pagenum: this.pagenum,
+        pagesize: this.pagesize
+      }
+      this.$store.dispatch('article/deleteArticleList', params)
     },
 
-    filters: {
-      filterStatus(value) {
-        if (value === 0) {
-          return '正常'
-        }
-        if (value === 1) {
-          return '回收站'
-        }
-        if (value === 2) {
-          return '未审核'
-        }
+    // 用户点击上一页按钮改变当前页后触发
+    prevClickHandle () {
+      console.log('用户点击上一页按钮')
+    },
 
+    // 用户点击下一页按钮改变当前页后触发
+    nextClickHandle () {
+      console.log('用户点击下一页按钮')
+    },
+
+    // 选中的
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
+
+    // 查看
+    handleClick (row) {
+      console.log('查看ID', row.id)
+    },
+    // 编辑
+    editorHandle (row) {
+      console.log('编辑ID', row.id)
+      const articleeditorIndex = this.tags.findIndex(value => value.name === 'articleeditor')
+      const articleeditor = this.tags.find(value => value.name === 'articleeditor')
+      /* 替换 tags 中 tag数据 */
+      if (articleeditor && Object.keys(articleeditor.params).length) {
+        articleeditor.params.id = row.id
+        this.tags.splice(articleeditorIndex, 1, articleeditor)
+      }
+      this.$router.push(`/articles/articleeditor/${row.id}`)
+    }
+  },
+
+  filters: {
+    filterStatus (value) {
+      if (value === 0) {
+        return '正常'
+      }
+      if (value === 1) {
+        return '回收站'
+      }
+      if (value === 2) {
+        return '未审核'
       }
     }
   }
+}
 </script>
 
 <style lang="scss">
-
 
   .topic{
     .filter{
@@ -514,7 +509,6 @@
         background-color: #F0F8FF;
       }
 
-
     }
 
     .paging{
@@ -534,9 +528,6 @@
 
     }
 
-
-
   }
-
 
 </style>

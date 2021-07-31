@@ -1,5 +1,4 @@
-import axios from "../utils/http";
-
+import axios from '../utils/http'
 
 // 获取主题字段
 export const getTopicField = () => axios.get('/api/topicField')

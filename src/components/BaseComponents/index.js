@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import BaseIconSvg from './BaseIcon-svg'
-import BaseLoading from "./BaseLoading";
+import BaseLoading from './BaseLoading'
 /* 注册全局组件 */
 Vue.component('BaseIconSvg', BaseIconSvg)
 Vue.component('BaseLoading', BaseLoading)

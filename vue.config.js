@@ -16,12 +16,11 @@ module.exports = {
     }
   },
   chainWebpack: config => {
-
     // 添加别名
     config.resolve.alias
-      .set("vue$", "vue/dist/vue.runtime.esm.js")
-      .set("@", resolve("src"))
-      .set("@public", resolve("public"));
+      .set('vue$', 'vue/dist/vue.runtime.esm.js')
+      .set('@', resolve('src'))
+      .set('@public', resolve('public'))
 
     // GraphQL Loader
     config.module
@@ -48,7 +47,7 @@ module.exports = {
       '/api': {
         target: 'http://localhost:3000', // 当有/api 开头的请求路径 就会转发到 target
         //   ws: true, //WebSocket 使用
-        changeOrigin: true,
+        changeOrigin: true
         // pathRewrite: {
         //   '^/api': ''
         // }
@@ -56,7 +55,7 @@ module.exports = {
       '/upload': {
         target: 'http://localhost:3000', // 当有/api 开头的请求路径 就会转发到 target
         //   ws: true, //WebSocket 使用
-        changeOrigin: true,
+        changeOrigin: true
         // pathRewrite: {
         //   '^/api': ''
         // }

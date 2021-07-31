@@ -107,7 +107,6 @@
       </table>
     </div>
 
-
     <div class="topic_pop" style="margin-top: 15px">
       <div class="filter">
         <span>主题管理</span>
@@ -231,224 +230,221 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 
-  export default {
-    name: "topicPmp",
-    data() {
-      return {
-        // 主题筛选 选中的
-        categoryActive: '', // 主题分类选中的
-        regionActive: '', // 选中的所属地区
-        keywordActive: '', // 输入的关键字
-        reviewID: '', // 输入的点评对象ID
-        creator: '', // 主题创建者
-        topicAdmin: '', // 主题管理员
-        sortingActive: 1, // 选中的排序方式
-        orderActive: 1, // 升序 | 降序
-        pagesize: 20, // 每页条数
-        multipleSelection: [], // 选中的主题对象数组
+export default {
+  name: 'topicPmp',
+  data () {
+    return {
+      // 主题筛选 选中的
+      categoryActive: '', // 主题分类选中的
+      regionActive: '', // 选中的所属地区
+      keywordActive: '', // 输入的关键字
+      reviewID: '', // 输入的点评对象ID
+      creator: '', // 主题创建者
+      topicAdmin: '', // 主题管理员
+      sortingActive: 1, // 选中的排序方式
+      orderActive: 1, // 升序 | 降序
+      pagesize: 20, // 每页条数
+      multipleSelection: [], // 选中的主题对象数组
 
-        // ==================主题筛选所需数据===============================
-        filter: {
-          category: [
-            {
-              value: '选项1',
-              label: '黄金糕'
-            }, {
-              value: '选项2',
-              label: '双皮奶'
-            }, {
-              value: '选项3',
-              label: '蚵仔煎'
-            }, {
-              value: '选项4',
-              label: '龙须面'
-            }, {
-              value: '选项5',
-              label: '北京烤鸭'
-            }
-          ], // 主题分类
-          region: [
-            {
-              value: '选项1',
-              label: '黄金糕'
-            }, {
-              value: '选项2',
-              label: '双皮奶'
-            }, {
-              value: '选项3',
-              label: '蚵仔煎'
-            }, {
-              value: '选项4',
-              label: '龙须面'
-            }, {
-              value: '选项5',
-              label: '北京烤鸭'
-            }
-          ], // 所属地区
-          datePicker: '', // 时间选择
-          sorting: [
-            {
-              value: 1,
-              label: '默认排序'
-            }, {
-              value: 2,
-              label: '登记时间'
-            }, {
-              value: 3,
-              label: '推荐度'
-            },
-          ], // 排序方式
-          order: [
-            {
-              value: 1,
-              label: '递减'
-            }, {
-              value: 2,
-              label: '递增'
-            }
-          ], // 升序降序
-          offset: [
-            {
-              value: 10,
-              label: '10条'
-            }, {
-              value: 20,
-              label: '20条'
-            }
-          ], // 每页条数
+      // ==================主题筛选所需数据===============================
+      filter: {
+        category: [
+          {
+            value: '选项1',
+            label: '黄金糕'
+          }, {
+            value: '选项2',
+            label: '双皮奶'
+          }, {
+            value: '选项3',
+            label: '蚵仔煎'
+          }, {
+            value: '选项4',
+            label: '龙须面'
+          }, {
+            value: '选项5',
+            label: '北京烤鸭'
+          }
+        ], // 主题分类
+        region: [
+          {
+            value: '选项1',
+            label: '黄金糕'
+          }, {
+            value: '选项2',
+            label: '双皮奶'
+          }, {
+            value: '选项3',
+            label: '蚵仔煎'
+          }, {
+            value: '选项4',
+            label: '龙须面'
+          }, {
+            value: '选项5',
+            label: '北京烤鸭'
+          }
+        ], // 所属地区
+        datePicker: '', // 时间选择
+        sorting: [
+          {
+            value: 1,
+            label: '默认排序'
+          }, {
+            value: 2,
+            label: '登记时间'
+          }, {
+            value: 3,
+            label: '推荐度'
+          }
+        ], // 排序方式
+        order: [
+          {
+            value: 1,
+            label: '递减'
+          }, {
+            value: 2,
+            label: '递增'
+          }
+        ], // 升序降序
+        offset: [
+          {
+            value: 10,
+            label: '10条'
+          }, {
+            value: 20,
+            label: '20条'
+          }
+        ] // 每页条数
+      },
+
+      pagenum: 1 // 当前页码
+    }
+  },
+  watch: {
+    'topicList.pagenum' (v) {
+      this.pagenum = v
+    },
+    'topicList.pagesize' (v) {
+      this.pagesize = v
+    }
+  },
+  computed: {
+    ...mapState('tagsView', ['tags']),
+    ...mapState('topicPmp', ['topicList'])
+  },
+  mounted () {
+    this.getTopicList()
+  },
+  methods: {
+
+    getTopicList () {
+      this.$store.dispatch('topicPmp/fetchTopicList', {
+        pagenum: this.pagenum,
+        pagesize: this.pagesize
+      })
+    },
+
+    // 修改 推荐度 浏览量
+    changeHandle () {
+      // 获取 每条数据的 id 推荐度 浏览量
+      const { newArray2 } = this.topicList
+      const arr = []
+      for (let i = 0; i < newArray2.length; i++) {
+        const r = {}
+        r.id = newArray2[i].id
+        r.c_pv = newArray2[i].c_pv
+        r.c_degree = newArray2[i].c_degree
+        arr.push(r)
+      }
+      const params = {
+        data: {
+          arr
         },
-
-        pagenum: 1, // 当前页码
+        pagenum: this.pagenum,
+        pagesize: this.pagesize
       }
+      this.$store.dispatch('topicPmp/putTopicList', params)
     },
-    watch: {
-      'topicList.pagenum'(v) {
-        this.pagenum = v
-      },
-      'topicList.pagesize'(v) {
-        this.pagesize = v
-      },
-    },
-    computed: {
-      ...mapState('tagsView', ['tags']),
-      ...mapState('topicPmp', ['topicList']),
-    },
-    mounted() {
-      this.getTopicList()
-    },
-    methods: {
 
-      getTopicList() {
-        this.$store.dispatch('topicPmp/fetchTopicList', {
-          pagenum: this.pagenum,
-          pagesize: this.pagesize
-        })
-      },
-
-      // 修改 推荐度 浏览量
-      changeHandle(){
-        // 获取 每条数据的 id 推荐度 浏览量
-        let { newArray2 } = this.topicList
-        let arr = []
-        for (let i = 0; i < newArray2.length ; i++) {
-          let r = {}
-          r.id = newArray2[i].id
-          r.c_pv = newArray2[i].c_pv
-          r.c_degree = newArray2[i].c_degree
-          arr.push(r)
-        }
-        let params = {
-          data: {
-            arr
-          },
-          pagenum: this.pagenum,
-          pagesize: this.pagesize
-        }
-        this.$store.dispatch('topicPmp/putTopicList', params)
-      },
-
-      // 删除选中的
-      deleteHandle(){
-        let s = this.multipleSelection
-        if(s.length <= 0){
-          return
-        }
-        let arr = []
-        for (let i = 0; i < s.length ; i++) {
-          arr.push(s[i].id)
-        }
-
-        let params = {
-          data: {
-            arr
-          },
-          pagenum: this.pagenum,
-          pagesize: this.pagesize
-        }
-        this.$store.dispatch('topicPmp/deleteTopicList', params)
-      },
-
-
-      // 当前页改变时触发
-      currentChangeHandle() {
-        this.$store.dispatch('topicPmp/fetchTopicList', {
-          pagenum: this.topicList.pagenum,
-          pagesize: this.topicList.pagesize
-        })
-      },
-
-      // 用户点击上一页按钮改变当前页后触发
-      prevClickHandle() {
-        console.log('用户点击上一页按钮')
-      },
-
-      // 用户点击下一页按钮改变当前页后触发
-      nextClickHandle() {
-        console.log('用户点击下一页按钮')
-      },
-
-
-      // 选中的
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
-
-      // 查看
-      handleClick(row) {
-        console.log('查看ID', row.id);
-      },
-      // 编辑
-      editorHandle(row) {
-        console.log('编辑ID', row.id)
-        let topiceditorIndex = this.tags.findIndex(value => value.name === 'topiceditor')
-        let topiceditor = this.tags.find(value => value.name === 'topiceditor')
-        /* 替换 tags 中 tag数据*/
-        if (topiceditor && Object.keys(topiceditor.params).length) {
-          topiceditor.params.id = row.id
-          this.tags.splice(topiceditorIndex, 1, topiceditor)
-        }
-        this.$router.push(`/topic/topicProject/topiceditor/${row.id}`);
+    // 删除选中的
+    deleteHandle () {
+      const s = this.multipleSelection
+      if (s.length <= 0) {
+        return
       }
+      const arr = []
+      for (let i = 0; i < s.length; i++) {
+        arr.push(s[i].id)
+      }
+
+      const params = {
+        data: {
+          arr
+        },
+        pagenum: this.pagenum,
+        pagesize: this.pagesize
+      }
+      this.$store.dispatch('topicPmp/deleteTopicList', params)
     },
 
-    filters: {
+    // 当前页改变时触发
+    currentChangeHandle () {
+      this.$store.dispatch('topicPmp/fetchTopicList', {
+        pagenum: this.topicList.pagenum,
+        pagesize: this.topicList.pagesize
+      })
+    },
 
-      filterTopicStatus(value) {
-        if (value === 0) {
-          return '正常'
-        }
-        if (value === 1) {
-          return '回收站'
-        }
-        if (value === 2) {
-          return '未审核'
-        }
+    // 用户点击上一页按钮改变当前页后触发
+    prevClickHandle () {
+      console.log('用户点击上一页按钮')
+    },
 
+    // 用户点击下一页按钮改变当前页后触发
+    nextClickHandle () {
+      console.log('用户点击下一页按钮')
+    },
+
+    // 选中的
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
+
+    // 查看
+    handleClick (row) {
+      console.log('查看ID', row.id)
+    },
+    // 编辑
+    editorHandle (row) {
+      console.log('编辑ID', row.id)
+      const topiceditorIndex = this.tags.findIndex(value => value.name === 'topiceditor')
+      const topiceditor = this.tags.find(value => value.name === 'topiceditor')
+      /* 替换 tags 中 tag数据 */
+      if (topiceditor && Object.keys(topiceditor.params).length) {
+        topiceditor.params.id = row.id
+        this.tags.splice(topiceditorIndex, 1, topiceditor)
+      }
+      this.$router.push(`/topic/topicProject/topiceditor/${row.id}`)
+    }
+  },
+
+  filters: {
+
+    filterTopicStatus (value) {
+      if (value === 0) {
+        return '正常'
+      }
+      if (value === 1) {
+        return '回收站'
+      }
+      if (value === 2) {
+        return '未审核'
       }
     }
   }
+}
 </script>
 
 <style lang="scss">
@@ -507,6 +503,5 @@
 
     }
   }
-
 
 </style>

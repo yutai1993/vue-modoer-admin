@@ -18,7 +18,7 @@ const dynamicRouters = [
       title: '审核管理',
       icon: ''
     },
-   component: () => import(/* webpackChunkName: "examine" */'../../views/examine/index.vue'),
+    component: () => import(/* webpackChunkName: "examine" */'../../views/examine/index.vue'),
     children: [
       {
         path: 'comment',
@@ -174,7 +174,7 @@ const dynamicRouters = [
       title: '外链',
       icon: 'el-icon-view'
     }
-  },
+  }
 ]
 
 export default dynamicRouters

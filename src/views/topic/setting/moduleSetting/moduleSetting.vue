@@ -462,55 +462,51 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-  export default {
-    name: "moduleSetting",
-    data() {
-      return {
-        activeName: 'first', /* 标签页默认选中 */
-        loadingShow: false
-      };
-    },
-    mounted(){
-      this.getModuleSetting()
-    },
-    computed:{
-      ...mapState('moduleSetting',['firstOptions', 'secondOptions'])
-    },
-    methods: {
-      getModuleSetting(){
-        if(Object.keys(this.firstOptions).length === 0){
-          this.loadingShow = true
-          this.$store.dispatch('moduleSetting/REQ_MODULESETTING').then(()=>{
-            this.loadingShow = false
-
-          })
-        }
-
-
-      },
-
-      handleClick(tab, event) {
-        console.log(tab, event);
-      },
-      handleSubmit(){
-        let parameter = {};
-        if (this.activeName === 'first') {
-          parameter.type = 'first'
-          parameter.data = this.firstOptions
-        }else if (this.activeName === 'second') {
-          parameter.type = 'second'
-          parameter.data = this.secondOptions
-        }
-        this.$store.dispatch('moduleSetting/DELIVER_MODULE_SETTING', parameter).then((result)=>{
-          if (result.code === 200) {
-            this.$message.success('修改成功')
-          }
+import { mapState } from 'vuex'
+export default {
+  name: 'moduleSetting',
+  data () {
+    return {
+      activeName: 'first', /* 标签页默认选中 */
+      loadingShow: false
+    }
+  },
+  mounted () {
+    this.getModuleSetting()
+  },
+  computed: {
+    ...mapState('moduleSetting', ['firstOptions', 'secondOptions'])
+  },
+  methods: {
+    getModuleSetting () {
+      if (Object.keys(this.firstOptions).length === 0) {
+        this.loadingShow = true
+        this.$store.dispatch('moduleSetting/REQ_MODULESETTING').then(() => {
+          this.loadingShow = false
         })
-
       }
+    },
+
+    handleClick (tab, event) {
+      console.log(tab, event)
+    },
+    handleSubmit () {
+      const parameter = {}
+      if (this.activeName === 'first') {
+        parameter.type = 'first'
+        parameter.data = this.firstOptions
+      } else if (this.activeName === 'second') {
+        parameter.type = 'second'
+        parameter.data = this.secondOptions
+      }
+      this.$store.dispatch('moduleSetting/DELIVER_MODULE_SETTING', parameter).then((result) => {
+        if (result.code === 200) {
+          this.$message.success('修改成功')
+        }
+      })
     }
   }
+}
 </script>
 
 <style lang="scss">

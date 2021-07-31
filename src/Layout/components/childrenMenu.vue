@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import {mixinIsHidden} from '@/mixin/isHidden'
+import { mixinIsHidden } from '@/mixin/isHidden'
 export default {
   name: 'childrenMenu',
   props: {
@@ -24,7 +24,7 @@ export default {
       }
     }
   },
-  mixins:[mixinIsHidden]
+  mixins: [mixinIsHidden]
 
 }
 </script>

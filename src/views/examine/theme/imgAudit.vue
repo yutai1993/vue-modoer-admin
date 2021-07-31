@@ -51,32 +51,31 @@
 </template>
 
 <script>
-  export default {
-    name: "imgAudit",
-    data(){
-      return {
-        themeAuditData:[],
-        multipleSelection: [],
-        emptyText: true,
-      }
-    },
-    mounted () {
-        setTimeout(()=>{
-          this.emptyText = false
-        },2000)
+export default {
+  name: 'imgAudit',
+  data () {
+    return {
+      themeAuditData: [],
+      multipleSelection: [],
+      emptyText: true
+    }
+  },
+  mounted () {
+    setTimeout(() => {
+      this.emptyText = false
+    }, 2000)
+  },
+
+  methods: {
+    // 选中的
+    handleSelectionChange (val) {
+      this.multipleSelection = val
     },
 
-    methods:{
-      // 选中的
-      handleSelectionChange(val){
-        this.multipleSelection = val
-      },
-
-      // 编辑
-      handleEdit(index, row) {
-        console.log(index, row)
-      }
+    // 编辑
+    handleEdit (index, row) {
+      console.log(index, row)
     }
   }
+}
 </script>
-

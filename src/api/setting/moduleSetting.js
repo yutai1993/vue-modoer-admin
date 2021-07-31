@@ -1,4 +1,4 @@
-import axios from "../../utils/http";
+import axios from '../../utils/http'
 
 export const getModuleSetting = function () {
   return axios.get('/api/moduleSetting')
